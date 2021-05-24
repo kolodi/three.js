@@ -226,6 +226,7 @@ function Strings( config ) {
 			'sidebar/geometry/tube_geometry/closed': 'Closed',
 			'sidebar/geometry/tube_geometry/curvetype': 'Curve Type',
 			'sidebar/geometry/tube_geometry/tension': 'Tension',
+			'sidebar/geometries': 'Geometries',
 
 			'sidebar/material/new': 'New',
 			'sidebar/material/copy': 'Copy',
@@ -285,6 +286,7 @@ function Strings( config ) {
 			'sidebar/material/depthtest': 'Depth Test',
 			'sidebar/material/depthwrite': 'Depth Write',
 			'sidebar/material/wireframe': 'Wireframe',
+			'sidebar/materials': 'Materials',
 
 			'sidebar/script': 'Script',
 			'sidebar/script/new': 'New',
