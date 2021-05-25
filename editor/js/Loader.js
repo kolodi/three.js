@@ -813,6 +813,20 @@ function Loader( editor ) {
 
 	}
 
+	this.loadFromWeb = function (path) {
+		loadFromWebAsync(path);
+	}
+	
+	async function loadFromWebAsync(path) {
+		const { GLTFLoader } = await import( '../../examples/jsm/loaders/GLTFLoader.js' );
+		const loader = new GLTFLoader();
+		loader.load( path, function ( gltf ) {
+	
+			editor.execute( new AddObjectCommand( editor, gltf.scene ) );
+	
+		});
+	}
+
 	function isGLTF1( contents ) {
 
 		var resultContent;

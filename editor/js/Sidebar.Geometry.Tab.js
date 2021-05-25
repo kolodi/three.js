@@ -25,10 +25,8 @@ function SidebarGeometryTab( editor, group ) {
     })
 
     async function addGeometry(path) {
-        const res = await fetch(`${ASSETS_BASE_URL}/${path}${ext}`);
-        const glb = await res.json();
-
-        editor.loader.loadFile( glb );
+        const fullPath = `${ASSETS_BASE_URL}/${path}${ext}`;
+        editor.loader.loadFromWeb(fullPath);
     }
 
     settings.add( itemsRow );
