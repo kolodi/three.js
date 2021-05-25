@@ -44,8 +44,20 @@
 		<script src="js/libs/tern-threejs/threejs.js"></script>
 		<script src="js/libs/signals.min.js"></script>
 
-		<script type="module">
+		<script>
+			const assetsEndpoint = 'https://jsonblob.com/api/jsonBlob/c389c2bf-bc90-11eb-b39c-b971334a8014';
+			let assets;
 
+			async function getAssets(assetsUrl) {
+				const res = await fetch(assetsUrl);
+				assets = await res.json();
+			}
+
+			getAssets(assetsEndpoint);
+		</script>
+
+		<script type="module">
+			
 			import * as THREE from '../build/three.module.js';
 
 			import { Editor } from './js/Editor.js';
@@ -87,7 +99,7 @@
 			var player = new Player( editor );
 			document.body.appendChild( player.dom );
 
-			var sidebar = new Sidebar( editor );
+			var sidebar = new Sidebar( editor, assets );
 			document.body.appendChild( sidebar.dom );
 
 			var menubar = new Menubar( editor );

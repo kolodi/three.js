@@ -63,7 +63,8 @@ function Loader( editor ) {
 	};
 
 	this.loadFile = function ( file, manager ) {
-
+		console.log(file)
+		
 		var filename = file.name;
 		var extension = filename.split( '.' ).pop().toLowerCase();
 
