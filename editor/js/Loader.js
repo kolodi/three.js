@@ -1,7 +1,6 @@
 import * as THREE from '../../build/three.module.js';
 
 import { TGALoader } from '../../examples/jsm/loaders/TGALoader.js';
-import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
 import { AddObjectCommand } from './commands/AddObjectCommand.js';
 import { SetSceneCommand } from './commands/SetSceneCommand.js';
@@ -11,13 +10,6 @@ import { LoaderUtils } from './LoaderUtils.js';
 import { unzipSync, strFromU8 } from '../../examples/jsm/libs/fflate.module.js';
 
 function Loader( editor ) {
-
-	const signals = editor.signals;
-    let selected
-
-    signals.objectSelected.add(function (object) {
-        selected = object
-    });
 
 	var scope = this;
 
@@ -30,42 +22,6 @@ function Loader( editor ) {
 			scope.loadFiles( files, filesMap );
 
 		} );
-
-	};
-
-	this.loadRemote = async function ( item ) {
-
-		const gltf = await loadAsync(item.Path);
-
-		gltf.scene.name = item.Name;
-		editor.execute( new AddObjectCommand( editor, gltf.scene ) );
-
-	};
-
-	this.addMaterial = async function ( url ) {
-
-		if ( !selected ) return;
-
-		const matGlb = await loadAsync(url);
-
-		selected.traverse( function ( obj ) {
-			
-			const geometry = obj.material;
-			const material = matGlb.scene.children[0].material;
-			
-			geometry.map = material.map;
-			geometry.normalMap = material.normalMap;
-			geometry.normalScale = material.normalScale;
-			geometry.metalnessMap = material.metalnessMap;
-			geometry.metalness = material.metalness;
-			geometry.roughness = material.roughness;
-			geometry.roughnessMap = material.roughnessMap;
-
-			geometry.needsUpdate = true;
-
-		} );
-
-		editor.signals.objectChanged.dispatch(selected);
 
 	};
 
@@ -107,8 +63,7 @@ function Loader( editor ) {
 	};
 
 	this.loadFile = function ( file, manager ) {
-		console.log(file)
-		
+
 		var filename = file.name;
 		var extension = filename.split( '.' ).pop().toLowerCase();
 
@@ -890,15 +845,6 @@ function Loader( editor ) {
 
 		return ( json.asset != undefined && json.asset.version[ 0 ] < 2 );
 
-	}
-
-	async function loadAsync(url, progressCb) {
-		const loader = new GLTFLoader();
-		return new Promise((resolve, reject) => {
-			loader.load(url, gltf => {
-				resolve(gltf);
-			}, progress => { if (!!progressCb) progressCb(progress) }, err => reject(err))
-		})
 	}
 
 }

@@ -2,6 +2,7 @@ import * as THREE from '../../build/three.module.js';
 
 import { Config } from './Config.js';
 import { Loader } from './Loader.js';
+import { AssetsExplorer } from './AssetsExplorer.js';
 import { History as _History } from './History.js';
 import { Strings } from './Strings.js';
 import { Storage as _Storage } from './Storage.js';
@@ -96,6 +97,7 @@ function Editor() {
 	this.strings = new Strings( this.config );
 
 	this.loader = new Loader( this );
+	this.explorer = new AssetsExplorer( this );
 
 	this.camera = _DEFAULT_CAMERA.clone();
 

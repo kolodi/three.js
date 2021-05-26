@@ -6,7 +6,7 @@ function SidebarGeometryTab(editor, group) {
     const ext = '.glb';
 
     function addGeometry(item) {
-        editor.loader.loadRemote(item);
+        editor.explorer.loadRemote(item);
     };
 
     // Layout
