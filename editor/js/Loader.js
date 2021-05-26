@@ -26,26 +26,21 @@ function Loader( editor ) {
 
 	};
 
-	this.loadRemote = function ( url ) {
+	this.loadRemote = async function ( item ) {
 
-		const loader = new GLTFLoader();
-
-		loader.load( url, function ( glb ) {
-			editor.execute( new AddObjectCommand( editor, glb.scene ) );
-		} );
+		const gltf = await loadAsync(item.Path);
+		gltf.scene.name = item.Name;
+		editor.execute( new AddObjectCommand( editor, gltf.scene ) );
 
 	};
 
+
+
 	this.addMaterial = async function ( url, object ) {
 
-		const loader = new GLTFLoader();
-		let matGlb;
-
-		await loader.load( url, function ( mat ) {
-			matGlb = mat
-		} );
-
 		if ( !object ) return;
+
+		const matGlb = await loadAsync(url);
 		
 		object.traverse( function ( obj ) {
 			const geometry = obj.material;
@@ -60,6 +55,7 @@ function Loader( editor ) {
 			geometry.roughness = material.roughness;
 			geometry.roughnessMap = material.roughnessMap;
 			// console.log(geometry)
+			geometry.needsUpdate = true;
 			
 		} );
 
@@ -886,6 +882,15 @@ function Loader( editor ) {
 
 		return ( json.asset != undefined && json.asset.version[ 0 ] < 2 );
 
+	}
+
+	async function loadAsync(url, progressCb) {
+		const loader = new GLTFLoader();
+		return new Promise((resolve, reject) => {
+			loader.load(url, gltf => {
+				resolve(gltf);
+			}, progress => { if (!!progressCb) progressCb(progress) }, err => reject(err))
+		})
 	}
 
 }

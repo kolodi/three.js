@@ -5,10 +5,9 @@ function SidebarGeometryTab( editor, group ) {
     const ASSETS_BASE_URL = 'https://s3.eu-south-1.amazonaws.com/k3.varplus.it/res/ab/LTS2019/web/dev';
     const ext = '.glb';
 
-    function addGeometry( path ) {
-        const glbUrl = `${ASSETS_BASE_URL}/${path}${ext}`;
+    function addGeometry(item) {
 
-        editor.loader.loadRemote( glbUrl );
+        editor.loader.loadRemote(item);
     };
 
     // Layout
@@ -23,12 +22,16 @@ function SidebarGeometryTab( editor, group ) {
 
     const keys = Object.keys( group.Items );
     keys.forEach(key => {
-        const geoTitle = new UIText( key );
-        const geoBtn = new UIButton( '+' );
-        const geoItem = new UIDiv().setClass( 'geo-item' ).add( geoTitle ).add( geoBtn );
-        geoItem.onClick( () => addGeometry( group.Items[key].Path ) );
+        const geoTitle = new UIText(key);
+        const geoBtn = new UIButton('+');
+        const geoItem = new UIDiv().setClass('geo-item').add(geoTitle).add(geoBtn);
+        const item = {
+            Name: key,
+            Path: `${ASSETS_BASE_URL}/${group.Items[key].Path}${ext}`,
+        }
+        geoItem.onClick(() => addGeometry(item));
 
-        itemsRow.add( geoItem );
+        itemsRow.add(geoItem);
     });
 
     settings.add( itemsRow );
