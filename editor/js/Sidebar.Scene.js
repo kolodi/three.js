@@ -220,7 +220,12 @@ function SidebarScene( editor ) {
 		'ModelViewer': 'ModelViewer'
 
 	} ).setWidth( '150px' );
-	environmentType.setValue( 'None' );
+
+	setTimeout(() => {
+		environmentType.setValue( 'ModelViewer' );
+		signals.sceneEnvironmentChanged.dispatch( 'ModelViewer' );
+	}, 1000);
+	
 	environmentType.onChange( function () {
 
 		signals.sceneEnvironmentChanged.dispatch( environmentType.getValue() );
