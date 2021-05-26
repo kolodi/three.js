@@ -1,6 +1,7 @@
 import * as THREE from '../../build/three.module.js';
 
 import { TGALoader } from '../../examples/jsm/loaders/TGALoader.js';
+import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
 import { AddObjectCommand } from './commands/AddObjectCommand.js';
 import { SetSceneCommand } from './commands/SetSceneCommand.js';
@@ -21,6 +22,45 @@ function Loader( editor ) {
 
 			scope.loadFiles( files, filesMap );
 
+		} );
+
+	};
+
+	this.loadRemote = function ( url ) {
+
+		const loader = new GLTFLoader();
+
+		loader.load( url, function ( glb ) {
+			editor.execute( new AddObjectCommand( editor, glb.scene ) );
+		} );
+
+	};
+
+	this.addMaterial = async function ( url, object ) {
+
+		const loader = new GLTFLoader();
+		let matGlb;
+
+		await loader.load( url, function ( mat ) {
+			matGlb = mat
+		} );
+
+		if ( !object ) return;
+		
+		object.traverse( function ( obj ) {
+			const geometry = obj.material;
+			const material = matGlb.scene.children[0].material;
+			console.log(geometry)
+			
+			geometry.map = material.map;
+			geometry.normalMap = material.normalMap;
+			geometry.normalScale = material.normalScale;
+			geometry.metalnessMap = material.metalnessMap;
+			geometry.metalness = material.metalness;
+			geometry.roughness = material.roughness;
+			geometry.roughnessMap = material.roughnessMap;
+			// console.log(geometry)
+			
 		} );
 
 	};
@@ -811,20 +851,6 @@ function Loader( editor ) {
 
 		}
 
-	}
-
-	this.loadFromWeb = function (path) {
-		loadFromWebAsync(path);
-	}
-	
-	async function loadFromWebAsync(path) {
-		const { GLTFLoader } = await import( '../../examples/jsm/loaders/GLTFLoader.js' );
-		const loader = new GLTFLoader();
-		loader.load( path, function ( gltf ) {
-	
-			editor.execute( new AddObjectCommand( editor, gltf.scene ) );
-	
-		});
 	}
 
 	function isGLTF1( contents ) {

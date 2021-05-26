@@ -433,6 +433,39 @@ class UICheckbox extends UIElement {
 
 }
 
+class UIRadio extends UIElement {
+
+	constructor( boolean ) {
+
+		super( document.createElement( 'input' ) );
+
+		this.dom.className = 'Radio';
+		this.dom.type = 'radio';
+
+		this.setValue( boolean );
+
+	}
+
+	getValue() {
+
+		return this.dom.checked;
+
+	}
+
+	setValue( value ) {
+
+		if ( value !== undefined ) {
+
+			this.dom.checked = value;
+
+		}
+
+		return this;
+
+	}
+
+}
+
 
 class UIColor extends UIElement {
 
@@ -1262,4 +1295,4 @@ class ListboxItem extends UIDiv {
 
 }
 
-export { UIElement, UISpan, UIDiv, UIRow, UIPanel, UIText, UIInput, UITextArea, UISelect, UICheckbox, UIColor, UINumber, UIInteger, UIBreak, UIHorizontalRule, UIButton, UIProgress, UITabbedPanel, UIListbox, ListboxItem };
+export { UIElement, UISpan, UIDiv, UIRow, UIPanel, UIText, UIInput, UITextArea, UISelect, UICheckbox, UIRadio, UIColor, UINumber, UIInteger, UIBreak, UIHorizontalRule, UIButton, UIProgress, UITabbedPanel, UIListbox, ListboxItem };

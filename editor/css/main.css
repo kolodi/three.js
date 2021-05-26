@@ -3,6 +3,7 @@
 } */
 
 body {
+	--red-50: rgba(255,0,0,0.5);
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	margin: 0;
@@ -293,7 +294,8 @@ select {
 #resizer {
 	position: absolute;
 	top: 32px;
-	right: 295px;
+	/* right: 295px; */
+	right: 405px;
 	width: 5px;
 	bottom: 0px;
 	/* background-color: rgba(255,0,0,0.5); */
@@ -409,7 +411,8 @@ select {
 	right: 0;
 	top: 32px;
 	bottom: 0;
-	width: 300px;
+	/* width: 300px; */
+	width: 420px;
 	background: #eee;
 	overflow: auto;
 }
@@ -501,12 +504,15 @@ select {
 }
 
 	.TabbedPanel .Tab {
+		font-size: 12px;
 		color: #aaa;
 		border-right: 1px solid #ccc;
 	}
 
 	.TabbedPanel .Tab.selected {
-		color: #888;
+		font-weight: 800;
+		/* color: #888; */
+		color: var(--red-50);
 		background-color: #eee;
 	}
 
@@ -518,6 +524,92 @@ select {
 .Panel {
 	color: #888;
 }
+
+.geo-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 2px;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+	.geo-item span {
+		padding-left: 16px;
+		font-weight: 800;
+		font-size: 12px;
+		cursor: pointer !important;
+		transition: inherit;
+	}
+	.geo-item button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 24px;
+		height: 24px;
+		font-weight: 800;
+		font-size: 14px;
+		transition: inherit;
+	}
+	.geo-item:hover {
+		border-color: var(--red-50);
+	}
+	.geo-item:hover button {
+		background-color: var(--red-50);
+		color: #fff;
+	}
+
+.mat-content {
+	display: flex;
+	flex-direction: column;
+	/* height: 0; */
+	/* visibility: hidden; */
+	transition: all 0.3s ease;
+}
+.mat-content > .geo-item {
+	align-self: flex-end;
+	width: 95%;
+}
+.mat-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 2px;
+	background-color: #ddd;
+	cursor: pointer;
+}
+	.mat-item span {
+		padding-left: 16px;
+		width: 100%;
+		height: 100%;
+		font-weight: 800;
+		font-size: 12px;
+		cursor: pointer !important;
+		transition: inherit;
+	}
+	.mat-item button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 24px;
+		height: 24px;
+		font-weight: 800;
+		font-size: 14px;
+		background-color: transparent;
+		color: var(--red-50);
+		transition: inherit;
+	}
+	.mat-item:hover {
+		background-color: var(--red-50);
+		color: #fff;
+	}
+	.mat-item:hover button {
+		color: #fff;
+	}
+	.mat-box:hover .mat-content {
+		height: fit-content;
+		visibility: visible;
+	}
 
 /* */
 
