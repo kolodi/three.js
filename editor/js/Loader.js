@@ -29,23 +29,22 @@ function Loader( editor ) {
 	this.loadRemote = async function ( item ) {
 
 		const gltf = await loadAsync(item.Path);
+
 		gltf.scene.name = item.Name;
 		editor.execute( new AddObjectCommand( editor, gltf.scene ) );
 
 	};
-
-
 
 	this.addMaterial = async function ( url, object ) {
 
 		if ( !object ) return;
 
 		const matGlb = await loadAsync(url);
-		
+
 		object.traverse( function ( obj ) {
+			
 			const geometry = obj.material;
 			const material = matGlb.scene.children[0].material;
-			console.log(geometry)
 			
 			geometry.map = material.map;
 			geometry.normalMap = material.normalMap;
@@ -54,9 +53,9 @@ function Loader( editor ) {
 			geometry.metalness = material.metalness;
 			geometry.roughness = material.roughness;
 			geometry.roughnessMap = material.roughnessMap;
-			// console.log(geometry)
+
 			geometry.needsUpdate = true;
-			
+
 		} );
 
 	};
