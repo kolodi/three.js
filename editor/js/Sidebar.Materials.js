@@ -8,7 +8,7 @@ function SidebarMaterials(editor, materials) {
     function applyMaterial(path) {
         const glbUrl = `${ASSETS_BASE_URL}/${path}${ext}`;
 
-        editor.explorer.addMaterial(glbUrl)
+        editor.explorer.applyMaterialToSelected(glbUrl)
     };
 
     // Layout

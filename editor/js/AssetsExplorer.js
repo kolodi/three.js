@@ -12,7 +12,7 @@ function AssetsExplorer( editor ) {
         selected = object
     });
 
-	this.loadRemote = async function ( item ) {
+	this.addGeometry = async function ( item ) {
 
 		const gltf = await loadAsync(item.Path);
 
@@ -21,7 +21,7 @@ function AssetsExplorer( editor ) {
 
 	};
 
-	this.addMaterial = async function ( url ) {
+	this.applyMaterialToSelected = async function ( url ) {
 
 		if ( !selected ) return;
 

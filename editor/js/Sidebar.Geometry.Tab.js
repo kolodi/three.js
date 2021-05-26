@@ -5,9 +5,7 @@ function SidebarGeometryTab(editor, group) {
     const ASSETS_BASE_URL = 'https://s3.eu-south-1.amazonaws.com/k3.varplus.it/res/ab/LTS2019/web/dev';
     const ext = '.glb';
 
-    function addGeometry(item) {
-        editor.explorer.loadRemote(item);
-    };
+    const explorer = editor.explorer;
 
     // Layout
     const container = new UISpan();
@@ -28,7 +26,7 @@ function SidebarGeometryTab(editor, group) {
             Name: key,
             Path: `${ASSETS_BASE_URL}/${group.Items[key].Path}${ext}`,
         };
-        geoItem.onClick(() => addGeometry(item));
+        geoItem.onClick(() => explorer.addGeometry(item));
 
         itemsRow.add(geoItem);
     });
