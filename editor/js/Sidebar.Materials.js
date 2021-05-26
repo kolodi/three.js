@@ -4,17 +4,11 @@ function SidebarMaterials(editor, materials) {
 
     const ASSETS_BASE_URL = 'https://s3.eu-south-1.amazonaws.com/k3.varplus.it/res/ab/LTS2019/web/dev';
     const ext = '.glb';
-    const signals = editor.signals;
-    let selected
-
-    signals.objectSelected.add(function (object) {
-        selected = object
-    });
 
     function applyMaterial(path) {
         const glbUrl = `${ASSETS_BASE_URL}/${path}${ext}`;
 
-        editor.loader.addMaterial(glbUrl, selected)
+        editor.loader.addMaterial(glbUrl)
     };
 
     // Layout

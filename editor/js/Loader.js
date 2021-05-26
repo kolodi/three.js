@@ -12,6 +12,13 @@ import { unzipSync, strFromU8 } from '../../examples/jsm/libs/fflate.module.js';
 
 function Loader( editor ) {
 
+	const signals = editor.signals;
+    let selected
+
+    signals.objectSelected.add(function (object) {
+        selected = object
+    });
+
 	var scope = this;
 
 	this.texturePath = '';
@@ -35,13 +42,13 @@ function Loader( editor ) {
 
 	};
 
-	this.addMaterial = async function ( url, object ) {
+	this.addMaterial = async function ( url ) {
 
-		if ( !object ) return;
+		if ( !selected ) return;
 
 		const matGlb = await loadAsync(url);
 
-		object.traverse( function ( obj ) {
+		selected.traverse( function ( obj ) {
 			
 			const geometry = obj.material;
 			const material = matGlb.scene.children[0].material;
@@ -57,6 +64,8 @@ function Loader( editor ) {
 			geometry.needsUpdate = true;
 
 		} );
+
+		editor.signals.objectChanged.dispatch(selected);
 
 	};
 
