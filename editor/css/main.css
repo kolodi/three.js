@@ -525,6 +525,8 @@ select {
 	color: #888;
 }
 
+/* Geometries */
+
 .geo-item {
 	display: flex;
 	justify-content: space-between;
@@ -532,14 +534,13 @@ select {
 	margin-bottom: 2px;
 	border: 1px solid #ddd;
 	cursor: pointer;
-	transition: all 0.3s ease;
+	transition: border-color 0.3s ease;
 }
 	.geo-item span {
 		padding-left: 16px;
 		font-weight: 800;
 		font-size: 12px;
 		cursor: pointer !important;
-		transition: inherit;
 	}
 	.geo-item button {
 		display: flex;
@@ -549,7 +550,7 @@ select {
 		height: 24px;
 		font-weight: 800;
 		font-size: 14px;
-		transition: inherit;
+		transition: background-color 0.3s ease, color 0.3s ease;
 	}
 	.geo-item:hover {
 		border-color: var(--red-50);
@@ -559,16 +560,15 @@ select {
 		color: #fff;
 	}
 
-.mat-content {
-	display: flex;
-	flex-direction: column;
-	/* height: 0; */
-	/* visibility: hidden; */
-	transition: all 0.3s ease;
+/* Materials */
+
+.mat-label {
+	position: relative;
 }
-.mat-content > .geo-item {
-	align-self: flex-end;
-	width: 95%;
+.mat-check {
+	position: absolute;
+	top: 0; left: 0;
+	visibility: hidden;
 }
 .mat-item {
 	display: flex;
@@ -577,6 +577,7 @@ select {
 	margin-bottom: 2px;
 	background-color: #ddd;
 	cursor: pointer;
+	transition: all 0.3s ease;
 }
 	.mat-item span {
 		padding-left: 16px;
@@ -585,7 +586,6 @@ select {
 		font-weight: 800;
 		font-size: 12px;
 		cursor: pointer !important;
-		transition: inherit;
 	}
 	.mat-item button {
 		display: flex;
@@ -594,7 +594,7 @@ select {
 		width: 24px;
 		height: 24px;
 		font-weight: 800;
-		font-size: 14px;
+		font-size: 16px;
 		background-color: transparent;
 		color: var(--red-50);
 		transition: inherit;
@@ -606,10 +606,29 @@ select {
 	.mat-item:hover button {
 		color: #fff;
 	}
-	.mat-box:hover .mat-content {
-		height: fit-content;
-		visibility: visible;
+.mat-i-expanded {
+	background-color: var(--red-50);
+	color: #fff;
+}
+	.mat-i-expanded button {
+		color: #fff;
 	}
+
+.mat-content {
+	display: flex;
+	flex-direction: column;
+	visibility: collapse;
+	height: 0;
+	transition: all 0.3s ease, ;
+}
+.mat-c-expanded {
+	visibility: visible;
+	height: fit-content;
+}
+.mat-content > .geo-item {
+	align-self: flex-end;
+	width: 95%;
+}
 
 /* */
 

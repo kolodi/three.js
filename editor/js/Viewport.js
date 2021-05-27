@@ -390,6 +390,9 @@ function Viewport( editor ) {
 
 		container.dom.appendChild( renderer.domElement );
 
+		// Setup default environment
+		signals.sceneEnvironmentChanged.dispatch( 'ModelViewer' );
+
 		render();
 
 	} );
