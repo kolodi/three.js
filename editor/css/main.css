@@ -623,7 +623,7 @@ select {
 }
 .mat-c-expanded {
 	visibility: visible;
-	height: fit-content;
+	height: auto;
 }
 .mat-content > .geo-item {
 	align-self: flex-end;
