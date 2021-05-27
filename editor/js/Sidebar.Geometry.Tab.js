@@ -2,18 +2,15 @@ import { UIPanel, UIRow, UISpan, UIDiv, UIButton, UIText } from './libs/ui.js';
 
 function SidebarGeometryTab(editor, group) {
 
-    const ASSETS_BASE_URL = 'https://s3.eu-central-1.amazonaws.com/k3.perdormire.com/res/ab/LTS2019/web/DEV';
-    const ext = '.glb';
-
     const explorer = editor.explorer;
 
     // Layout
     const container = new UISpan();
 
-    const settings = new UIPanel();
-    settings.setBorderTop('0');
-    settings.setPaddingTop('20px');
-    container.add(settings);
+    const panel = new UIPanel();
+    panel.setBorderTop('0');
+    panel.setPaddingTop('20px');
+    container.add(panel);
 
     const itemsRow = new UIRow();
 
@@ -24,14 +21,15 @@ function SidebarGeometryTab(editor, group) {
         const geoItem = new UIDiv().setClass('geo-item').add(geoTitle).add(geoBtn);
         const item = {
             Name: key,
-            Path: `${ASSETS_BASE_URL}/${group.Items[key].Path}${ext}`,
-        };
+            Data: group.Items[key]
+        }
         geoItem.onClick(() => explorer.addGeometry(item));
 
         itemsRow.add(geoItem);
     });
 
-    settings.add(itemsRow);
+    panel.add(itemsRow);
+
 
     return container;
 

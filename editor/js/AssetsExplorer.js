@@ -5,44 +5,50 @@ import { AddObjectCommand } from './commands/AddObjectCommand.js';
 
 function AssetsExplorer( editor ) {
 
+    let selected;
+    let _source;
+
 	const signals = editor.signals;
-    let selected
 
     signals.objectSelected.add(function (object) {
         selected = object
     });
 
-	this.addGeometry = async function ( item ) {
+    signals.sourceChanged.add(source => {
+        _source = source;
+    });
 
-		const gltf = await loadAsync(item.Path);
+	this.addGeometry = async function ( item ) {
+        const url = `${_source.BasePath}/${item.Data.Path}.glb`;
+
+		const gltf = await loadAsync(url);
 
 		gltf.scene.name = item.Name;
 		editor.execute( new AddObjectCommand( editor, gltf.scene ) );
 
 	};
 
-	this.applyMaterialToSelected = async function ( url ) {
+	this.applyMaterialToSelected = async function ( materialVariant ) {
 
-		if ( !selected ) return;
+		if ( !selected || !selected.isMesh || !selected.material ) return;
+
+        const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
 
 		const matGlb = await loadAsync(url);
 
-		selected.traverse( function ( obj ) {
-			
-			const geometry = obj.material;
-			const material = matGlb.scene.children[0].material;
-			
-			geometry.map = material.map;
-			geometry.normalMap = material.normalMap;
-			geometry.normalScale = material.normalScale;
-			geometry.metalnessMap = material.metalnessMap;
-			geometry.metalness = material.metalness;
-			geometry.roughness = material.roughness;
-			geometry.roughnessMap = material.roughnessMap;
+        const selectedMaterial = selected.material;
+        const newMaterial = matGlb.scene.children[0].material;
+        
+        selectedMaterial.map = newMaterial.map;
+        selectedMaterial.normalMap = newMaterial.normalMap;
+        selectedMaterial.normalScale = newMaterial.normalScale;
+        selectedMaterial.metalnessMap = newMaterial.metalnessMap;
+        selectedMaterial.metalness = newMaterial.metalness;
+        selectedMaterial.roughness = newMaterial.roughness;
+        selectedMaterial.roughnessMap = newMaterial.roughnessMap;
 
-			geometry.needsUpdate = true;
+        selectedMaterial.needsUpdate = true;
 
-		} );
 
 		editor.signals.objectChanged.dispatch(selected);
 

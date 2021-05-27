@@ -325,6 +325,8 @@ function Strings( config ) {
 			'sidebar/settings/viewport/grid': 'Grid',
 			'sidebar/settings/viewport/helpers': 'Helpers',
 
+			'sidebar/settings/source': 'Source',
+
 			'sidebar/history': 'History',
 			'sidebar/history/persistent': 'persistent',
 

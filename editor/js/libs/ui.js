@@ -1062,6 +1062,13 @@ class UITabbedPanel extends UIDiv {
 
 	}
 
+	clear() {
+		this.tabsDiv.clear();
+		this.panelsDiv.clear();
+		this.tabs = [];
+		this.panels = [];
+	}
+
 	select( id ) {
 
 		let tab;

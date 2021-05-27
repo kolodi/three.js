@@ -16,6 +16,10 @@ function SidebarSettings( editor ) {
 	settings.setPaddingTop( '20px' );
 	container.add( settings );
 
+	// sources
+
+	renderSources();
+
 	// language
 
 	var options = {
@@ -70,6 +74,62 @@ function SidebarSettings( editor ) {
 	container.add( new SidebarSettingsViewport( editor ) );
 	container.add( new SidebarSettingsShortcuts( editor ) );
 	container.add( new SidebarSettingsHistory( editor ) );
+
+	async function renderSources() {
+		let sources = config.getKey('explorer/sources');
+		let index = config.getKey('explorer/selectedSourceIndex');
+
+		if(!sources) {
+			const r = await fetch(config.getKey('explorer/sourcesListUrl'));
+			sources = await r.json();
+			index = 0;
+			config.setKey('explorer/sources', sources, 'explorer/selectedSourceIndex', 0);
+		}
+
+		if(!sources || sources.length === 0) {
+			const err = new Error('no sources');
+			console.error(err);
+			throw err;
+		}
+
+		function selectSourse(value) {
+			editor.config.setKey( 'explorer/selectedSourceIndex', value );
+			const index = parseInt(value, 10);
+			editor.signals.sourceChanged.dispatch(sources[index]);
+		}
+
+		const options = {};
+
+		for(let i = 0; i < sources.length; i++) {
+			options[i] = sources[i].Name;
+		}
+
+		const sourcesRow = new UIRow();
+		const sourceSelect = new UISelect().setWidth( '150px' );
+		sourceSelect.setOptions( options );
+
+		sourceSelect.setValue( index );
+		selectSourse(index);
+
+		sourceSelect.onChange( function () {
+
+			const value = this.getValue();
+
+			selectSourse(value);
+
+		} );
+
+		sourcesRow.add( new UIText( strings.getKey( 'sidebar/settings/source' ) ).setWidth( '90px' ) );
+		sourcesRow.add( sourceSelect );
+
+		settings.add( sourcesRow );
+		
+
+
+	}
+
+	
+
 
 	return container;
 

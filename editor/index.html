@@ -62,10 +62,10 @@
 			(async function (params) {
 
 				//var assetsEndpoint = 'https://jsonblob.com/api/jsonBlob/c389c2bf-bc90-11eb-b39c-b971334a8014';
-				var assetsEndpoint =  'https://jsonblob.com/api/jsonBlob/ee71221f-be43-11eb-967a-21920ba051e0';
+				// var assetsEndpoint =  'https://jsonblob.com/api/jsonBlob/ee71221f-be43-11eb-967a-21920ba051e0';
 
-				var res = await fetch(assetsEndpoint);
-				var assets = await res.json();
+				// var res = await fetch(assetsEndpoint);
+				// var assets = await res.json();
 				
 				window.URL = window.URL || window.webkitURL;
 				window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -96,7 +96,7 @@
 				var player = new Player( editor );
 				document.body.appendChild( player.dom );
 	
-				var sidebar = new Sidebar( editor, assets );
+				var sidebar = new Sidebar( editor );
 				document.body.appendChild( sidebar.dom );
 	
 				var menubar = new Menubar( editor );

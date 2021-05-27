@@ -18,6 +18,10 @@ function Editor() {
 
 	this.signals = {
 
+		// explorer
+
+		sourceChanged: new Signal(),
+
 		// script
 
 		editScript: new Signal(),
