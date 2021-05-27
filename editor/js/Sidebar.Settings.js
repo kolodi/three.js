@@ -17,8 +17,8 @@ function SidebarSettings( editor ) {
 	container.add( settings );
 
 	// sources
-
-	renderSources();
+	const sourcesRow = new UIRow();
+	settings.add( sourcesRow );
 
 	// language
 
@@ -104,7 +104,6 @@ function SidebarSettings( editor ) {
 			options[i] = sources[i].Name;
 		}
 
-		const sourcesRow = new UIRow();
 		const sourceSelect = new UISelect().setWidth( '150px' );
 		sourceSelect.setOptions( options );
 
@@ -131,7 +130,7 @@ function SidebarSettings( editor ) {
 	
 
 
-	return container;
+	return { container, renderSources };
 
 }
 

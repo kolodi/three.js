@@ -32,7 +32,7 @@ function Sidebar(editor) {
 	container.addTab('geometries', strings.getKey('sidebar/geometries'), geometries.container);
 	container.addTab('materials', strings.getKey('sidebar/materials'), materials.container);
 	container.addTab('project', strings.getKey('sidebar/project'), project);
-	container.addTab('settings', strings.getKey('sidebar/settings'), settings);
+	container.addTab('settings', strings.getKey('sidebar/settings'), settings.container);
 	container.select('scene');
 
 	signals.sourceChanged.add(source => {
@@ -40,11 +40,17 @@ function Sidebar(editor) {
     });
 
 	async function renderAssetsTabs(source) {
+
 		const r = await fetch(source.AssetsList);
 		const assets = await r.json();
 		materials.render(assets.Materials);
 		geometries.render(assets.Geometries);
 	}
+
+	function init() {
+		settings.renderSources();
+	}
+	init();
 
 	return container;
 
