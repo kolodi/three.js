@@ -2,7 +2,7 @@ import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan } from './libs/ui.js';
 
 function SidebarMaterials(editor, materials) {
 
-    const ASSETS_BASE_URL = 'https://s3.eu-south-1.amazonaws.com/k3.varplus.it/res/ab/LTS2019/web/dev';
+    const ASSETS_BASE_URL = 'https://s3.eu-central-1.amazonaws.com/k3.perdormire.com/res/ab/LTS2019/web/DEV';
     const ext = '.glb';
 
     function applyMaterial(path) {
