@@ -220,12 +220,7 @@ function SidebarScene( editor ) {
 		'ModelViewer': 'ModelViewer'
 
 	} ).setWidth( '150px' );
-
-	setTimeout(() => {
-		environmentType.setValue( 'ModelViewer' );
-		signals.sceneEnvironmentChanged.dispatch( 'ModelViewer' );
-	}, 1000);
-	
+	environmentType.setValue( 'ModelViewer' );
 	environmentType.onChange( function () {
 
 		signals.sceneEnvironmentChanged.dispatch( environmentType.getValue() );
@@ -382,7 +377,7 @@ function SidebarScene( editor ) {
 
 		} else {
 
-			environmentType.setValue( 'None' );
+			// environmentType.setValue( 'None' );
 
 		}
 
@@ -432,6 +427,8 @@ function SidebarScene( editor ) {
 	signals.editorCleared.add( refreshUI );
 
 	signals.sceneGraphChanged.add( refreshUI );
+
+	
 
 	/*
 	signals.objectChanged.add( function ( object ) {

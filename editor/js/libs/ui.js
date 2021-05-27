@@ -466,6 +466,15 @@ class UIRadio extends UIElement {
 
 }
 
+class UILabel extends UIElement {
+
+	constructor() {
+
+		super( document.createElement( 'label' ) );
+
+	}
+
+}
 
 class UIColor extends UIElement {
 
@@ -1295,4 +1304,17 @@ class ListboxItem extends UIDiv {
 
 }
 
-export { UIElement, UISpan, UIDiv, UIRow, UIPanel, UIText, UIInput, UITextArea, UISelect, UICheckbox, UIRadio, UIColor, UINumber, UIInteger, UIBreak, UIHorizontalRule, UIButton, UIProgress, UITabbedPanel, UIListbox, ListboxItem };
+class UIImg extends UIElement {
+
+	constructor( value ) {
+
+		super( document.createElement( 'img' ) );
+
+		this.dom.className = 'Img';
+		this.dom.setAttribute('src', value);
+
+	}
+
+}
+
+export { UIElement, UISpan, UIDiv, UIRow, UIPanel, UIText, UIInput, UITextArea, UISelect, UICheckbox, UIRadio, UILabel, UIColor, UINumber, UIInteger, UIBreak, UIHorizontalRule, UIButton, UIProgress, UITabbedPanel, UIListbox, ListboxItem, UIImg };

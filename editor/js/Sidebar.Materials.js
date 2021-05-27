@@ -1,4 +1,4 @@
-import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan } from './libs/ui.js';
+import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan, UILabel, UICheckbox, UIImg } from './libs/ui.js';
 
 function SidebarMaterials(editor, materials) {
 
@@ -23,14 +23,29 @@ function SidebarMaterials(editor, materials) {
 
     const keys = Object.keys(materials);
     keys.forEach(key => {
-        const matBox = new UIDiv().setClass('mat-box');
+        const label = new UILabel().setClass('mat-label');
+        const checkbox = new UICheckbox(false).setClass('mat-check');
         const matTitle = new UIText(key);
-        const matBtn = new UIButton('+');
-        const matItem = new UIDiv().setClass('mat-item').add(matTitle).add(matBtn);
-        matBox.add(matItem);
+        const matBtn = new UIButton();
+        matBtn.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
 
+        const matItem = new UIDiv().setClass('mat-item').add(matTitle).add(matBtn);
         const matContent = new UIDiv().setClass('mat-content');
-        matBox.add(matContent);
+
+        checkbox.onChange(function () {
+            if (checkbox.getValue()) {
+                matItem.addClass('mat-i-expanded');
+                matContent.addClass('mat-c-expanded');
+                matBtn.dom.innerHTML = '<i class="fas fa-angle-left"></i>';
+            } else {
+                matItem.removeClass('mat-i-expanded');
+                matContent.removeClass('mat-c-expanded');
+                matBtn.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
+            }
+        });
+        
+        label.add(checkbox);
+        label.add(matItem);
 
         const variants = Object.keys(materials[key].Variants);
         variants.forEach(variant => {
@@ -41,7 +56,8 @@ function SidebarMaterials(editor, materials) {
             matContent.add(varItem);
         });
 
-        itemsRow.add(matBox);
+        itemsRow.add(label);
+        itemsRow.add(matContent);
     });
 
     settings.add(itemsRow);
