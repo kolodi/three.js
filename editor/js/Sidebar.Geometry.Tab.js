@@ -30,7 +30,6 @@ function SidebarGeometryTab(editor, group) {
 
     panel.add(itemsRow);
 
-
     return container;
 
 }

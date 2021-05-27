@@ -4,7 +4,7 @@ import { SidebarSettingsViewport } from './Sidebar.Settings.Viewport.js';
 import { SidebarSettingsShortcuts } from './Sidebar.Settings.Shortcuts.js';
 import { SidebarSettingsHistory } from './Sidebar.Settings.History.js';
 
-function SidebarSettings( editor ) {
+function SidebarSettings(editor) {
 
 	var config = editor.config;
 	var strings = editor.strings;
@@ -12,13 +12,13 @@ function SidebarSettings( editor ) {
 	var container = new UISpan();
 
 	var settings = new UIPanel();
-	settings.setBorderTop( '0' );
-	settings.setPaddingTop( '20px' );
-	container.add( settings );
+	settings.setBorderTop('0');
+	settings.setPaddingTop('20px');
+	container.add(settings);
 
 	// sources
 	const sourcesRow = new UIRow();
-	settings.add( sourcesRow );
+	settings.add(sourcesRow);
 
 	// language
 
@@ -29,106 +29,102 @@ function SidebarSettings( editor ) {
 	};
 
 	var languageRow = new UIRow();
-	var language = new UISelect().setWidth( '150px' );
-	language.setOptions( options );
+	var language = new UISelect().setWidth('150px');
+	language.setOptions(options);
 
-	if ( config.getKey( 'language' ) !== undefined ) {
+	if (config.getKey('language') !== undefined) {
 
-		language.setValue( config.getKey( 'language' ) );
+		language.setValue(config.getKey('language'));
 
 	}
 
-	language.onChange( function () {
+	language.onChange(function () {
 
 		var value = this.getValue();
 
-		editor.config.setKey( 'language', value );
+		editor.config.setKey('language', value);
 
-	} );
+	});
 
-	languageRow.add( new UIText( strings.getKey( 'sidebar/settings/language' ) ).setWidth( '90px' ) );
-	languageRow.add( language );
+	languageRow.add(new UIText(strings.getKey('sidebar/settings/language')).setWidth('90px'));
+	languageRow.add(language);
 
-	settings.add( languageRow );
+	settings.add(languageRow);
 
 	// export precision
 
 	var exportPrecisionRow = new UIRow();
-	var exportPrecision = new UIInteger( config.getKey( 'exportPrecision' ) ).setRange( 2, Infinity );
+	var exportPrecision = new UIInteger(config.getKey('exportPrecision')).setRange(2, Infinity);
 
-	exportPrecision.onChange( function () {
+	exportPrecision.onChange(function () {
 
 		var value = this.getValue();
 
-		editor.config.setKey( 'exportPrecision', value );
+		editor.config.setKey('exportPrecision', value);
 
-	} );
+	});
 
-	exportPrecisionRow.add( new UIText( strings.getKey( 'sidebar/settings/exportPrecision' ) ).setWidth( '90px' ) );
-	exportPrecisionRow.add( exportPrecision );
+	exportPrecisionRow.add(new UIText(strings.getKey('sidebar/settings/exportPrecision')).setWidth('90px'));
+	exportPrecisionRow.add(exportPrecision);
 
-	settings.add( exportPrecisionRow );
+	settings.add(exportPrecisionRow);
 
 	//
 
-	container.add( new SidebarSettingsViewport( editor ) );
-	container.add( new SidebarSettingsShortcuts( editor ) );
-	container.add( new SidebarSettingsHistory( editor ) );
+	container.add(new SidebarSettingsViewport(editor));
+	container.add(new SidebarSettingsShortcuts(editor));
+	container.add(new SidebarSettingsHistory(editor));
 
 	async function renderSources() {
+
 		let sources = config.getKey('explorer/sources');
 		let index = config.getKey('explorer/selectedSourceIndex');
 
-		if(!sources) {
+		if (!sources) {
 			const r = await fetch(config.getKey('explorer/sourcesListUrl'));
 			sources = await r.json();
 			index = 0;
 			config.setKey('explorer/sources', sources, 'explorer/selectedSourceIndex', 0);
 		}
 
-		if(!sources || sources.length === 0) {
+		if (!sources || sources.length === 0) {
 			const err = new Error('no sources');
 			console.error(err);
 			throw err;
 		}
 
 		function selectSourse(value) {
-			editor.config.setKey( 'explorer/selectedSourceIndex', value );
+			editor.config.setKey('explorer/selectedSourceIndex', value);
 			const index = parseInt(value, 10);
 			editor.signals.sourceChanged.dispatch(sources[index]);
 		}
 
 		const options = {};
 
-		for(let i = 0; i < sources.length; i++) {
+		for (let i = 0; i < sources.length; i++) {
 			options[i] = sources[i].Name;
 		}
 
-		const sourceSelect = new UISelect().setWidth( '150px' );
-		sourceSelect.setOptions( options );
+		const sourceSelect = new UISelect().setWidth('150px');
+		sourceSelect.setOptions(options);
 
-		sourceSelect.setValue( index );
+		sourceSelect.setValue(index);
 		selectSourse(index);
 
-		sourceSelect.onChange( function () {
+		sourceSelect.onChange(function () {
 
 			const value = this.getValue();
 
 			selectSourse(value);
 
-		} );
+		});
 
-		sourcesRow.add( new UIText( strings.getKey( 'sidebar/settings/source' ) ).setWidth( '90px' ) );
-		sourcesRow.add( sourceSelect );
+		sourcesRow.add(new UIText(strings.getKey('sidebar/settings/source')).setWidth('90px'));
+		sourcesRow.add(sourceSelect);
 
-		settings.add( sourcesRow );
-		
+		settings.add(sourcesRow);
 
-
-	}
-
-	
-
+	};
 
 	return { container, renderSources };
 

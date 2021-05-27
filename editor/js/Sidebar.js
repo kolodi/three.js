@@ -35,8 +35,10 @@ function Sidebar(editor) {
 	container.addTab('settings', strings.getKey('sidebar/settings'), settings.container);
 	container.select('scene');
 
-	signals.sourceChanged.add(source => {
-        renderAssetsTabs(source)
+	signals.sourceChanged.add(function (source) {
+
+        renderAssetsTabs(source);
+
     });
 
 	async function renderAssetsTabs(source) {
@@ -45,11 +47,15 @@ function Sidebar(editor) {
 		const assets = await r.json();
 		materials.render(assets.Materials);
 		geometries.render(assets.Geometries);
-	}
+
+	};
 
 	function init() {
+
 		settings.renderSources();
-	}
+		
+	};
+
 	init();
 
 	return container;

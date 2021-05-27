@@ -3,42 +3,40 @@ import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
 import { AddObjectCommand } from './commands/AddObjectCommand.js';
 
-function AssetsExplorer( editor ) {
+function AssetsExplorer(editor) {
 
     let selected;
     let _source;
 
-	const signals = editor.signals;
+    const signals = editor.signals;
 
     signals.objectSelected.add(function (object) {
-        selected = object
+        selected = object;
     });
 
-    signals.sourceChanged.add(source => {
+    signals.sourceChanged.add(function (source) {
         _source = source;
     });
 
-	this.addGeometry = async function ( item ) {
+    this.addGeometry = async function (item) {
         const url = `${_source.BasePath}/${item.Data.Path}.glb`;
 
-		const gltf = await loadAsync(url);
+        const gltf = await loadAsync(url);
 
-		gltf.scene.name = item.Name;
-		editor.execute( new AddObjectCommand( editor, gltf.scene ) );
+        gltf.scene.name = item.Name;
+        editor.execute(new AddObjectCommand(editor, gltf.scene));
+    };
 
-	};
-
-	this.applyMaterialToSelected = async function ( materialVariant ) {
-
-		if ( !selected || !selected.isMesh || !selected.material ) return;
+    this.applyMaterialToSelected = async function (materialVariant) {
+        if (!selected || !selected.isMesh || !selected.material) return;
 
         const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
 
-		const matGlb = await loadAsync(url);
+        const matGlb = await loadAsync(url);
 
         const selectedMaterial = selected.material;
         const newMaterial = matGlb.scene.children[0].material;
-        
+
         selectedMaterial.map = newMaterial.map;
         selectedMaterial.normalMap = newMaterial.normalMap;
         selectedMaterial.normalScale = newMaterial.normalScale;
@@ -49,19 +47,17 @@ function AssetsExplorer( editor ) {
 
         selectedMaterial.needsUpdate = true;
 
+        editor.signals.objectChanged.dispatch(selected);
+    };
 
-		editor.signals.objectChanged.dispatch(selected);
-
-	};
-
-	async function loadAsync(url, progressCb) {
-		const loader = new GLTFLoader();
-		return new Promise((resolve, reject) => {
-			loader.load(url, gltf => {
-				resolve(gltf);
-			}, progress => { if (!!progressCb) progressCb(progress) }, err => reject(err))
-		})
-	}
+    async function loadAsync(url, progressCb) {
+        const loader = new GLTFLoader();
+        return new Promise((resolve, reject) => {
+            loader.load(url, gltf => {
+                resolve(gltf);
+            }, progress => { if (!!progressCb) progressCb(progress) }, err => reject(err));
+        });
+    };
 
 }
 

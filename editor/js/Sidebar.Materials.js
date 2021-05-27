@@ -1,4 +1,4 @@
-import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan, UILabel, UICheckbox, UIImg } from './libs/ui.js';
+import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan, UILabel, UICheckbox } from './libs/ui.js';
 
 function SidebarMaterials(editor) {
 
@@ -59,8 +59,6 @@ function SidebarMaterials(editor) {
 
         panel.add(itemsRow);
     }
-
-
 
     return {container, render};
 

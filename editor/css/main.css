@@ -294,8 +294,7 @@ select {
 #resizer {
 	position: absolute;
 	top: 32px;
-	/* right: 295px; */
-	right: 405px;
+	right: 429px;
 	width: 5px;
 	bottom: 0px;
 	/* background-color: rgba(255,0,0,0.5); */
@@ -412,7 +411,7 @@ select {
 	top: 32px;
 	bottom: 0;
 	/* width: 300px; */
-	width: 420px;
+	width: 436px;
 	background: #eee;
 	overflow: auto;
 }
@@ -537,17 +536,18 @@ select {
 	transition: border-color 0.3s ease;
 }
 	.geo-item span {
+		flex: 0.97;
 		padding-left: 16px;
 		font-weight: 800;
 		font-size: 12px;
 		cursor: pointer !important;
 	}
 	.geo-item button {
+		align-self: stretch;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 24px;
-		height: 24px;
+		width: 31px;
 		font-weight: 800;
 		font-size: 14px;
 		transition: background-color 0.3s ease, color 0.3s ease;
@@ -591,10 +591,10 @@ select {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 24px;
-		height: 24px;
+		width: 31px;
+		height: 31px;
 		font-weight: 800;
-		font-size: 16px;
+		font-size: 20px;
 		background-color: transparent;
 		color: var(--red-50);
 		transition: inherit;
