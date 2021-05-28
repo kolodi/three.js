@@ -2,17 +2,13 @@ import * as THREE from '../../build/three.module.js';
 import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
 import { AddObjectCommand } from './commands/AddObjectCommand.js';
+import { AddMaterialCommand } from './commands/AddMaterialCommand.js';
 
 function AssetsExplorer(editor) {
 
-    let selected;
     let _source;
 
     const signals = editor.signals;
-
-    signals.objectSelected.add(function (object) {
-        selected = object;
-    });
 
     signals.sourceChanged.add(function (source) {
         _source = source;
@@ -28,34 +24,27 @@ function AssetsExplorer(editor) {
     };
 
     this.applyMaterialToSelected = async function (materialVariant) {
-        if (!selected || !selected.isMesh || !selected.material) return;
 
         const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
-
+        
         const matGlb = await loadAsync(url);
 
-        const selectedMaterial = selected.material;
         const newMaterial = matGlb.scene.children[0].material;
 
-        selectedMaterial.map = newMaterial.map;
-        selectedMaterial.normalMap = newMaterial.normalMap;
-        selectedMaterial.normalScale = newMaterial.normalScale;
-        selectedMaterial.metalnessMap = newMaterial.metalnessMap;
-        selectedMaterial.metalness = newMaterial.metalness;
-        selectedMaterial.roughness = newMaterial.roughness;
-        selectedMaterial.roughnessMap = newMaterial.roughnessMap;
+        editor.execute(new AddMaterialCommand(editor, newMaterial));
 
-        selectedMaterial.needsUpdate = true;
-
-        editor.signals.objectChanged.dispatch(selected);
     };
 
     async function loadAsync(url, progressCb) {
         const loader = new GLTFLoader();
+
         return new Promise((resolve, reject) => {
-            loader.load(url, gltf => {
-                resolve(gltf);
-            }, progress => { if (!!progressCb) progressCb(progress) }, err => reject(err));
+            loader.load(
+                url,
+                gltf => resolve(gltf),
+                progress => !!progressCb && progressCb(progress),
+                err => reject(err)
+            );
         });
     };
 

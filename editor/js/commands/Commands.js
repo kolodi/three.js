@@ -1,3 +1,4 @@
+export { AddMaterialCommand } from './AddMaterialCommand.js';
 export { AddObjectCommand } from './AddObjectCommand.js';
 export { AddScriptCommand } from './AddScriptCommand.js';
 export { MoveObjectCommand } from './MoveObjectCommand.js';
