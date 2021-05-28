@@ -86,6 +86,7 @@
 		"webgl_loader_gltf",
 		"webgl_loader_gltf_compressed",
 		"webgl_loader_gltf_extensions",
+		"webgl_loader_gltf_transmission",
 		"webgl_loader_gltf_variants",
 		"webgl_loader_ifc",
 		"webgl_loader_imagebitmap",
@@ -196,6 +197,7 @@
 		"webgl_points_dynamic",
 		"webgl_points_sprites",
 		"webgl_points_waves",
+		"webgl_portal",
 		"webgl_raycast_sprite",
 		"webgl_raycast_texture",
 		"webgl_read_float_buffer",
@@ -364,7 +366,8 @@
 		"physics_ammo_instancing",
 		"physics_ammo_rope",
 		"physics_ammo_terrain",
-		"physics_ammo_volume"
+		"physics_ammo_volume",
+		"physics_oimo_instancing"
 	],
 	"misc": [
 		"misc_animation_groups",
