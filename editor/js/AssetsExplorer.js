@@ -29,7 +29,7 @@ function AssetsExplorer(editor) {
 
         const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
         
-        const matGlb = await loadAsync(url);
+        const matGlb = await loadAsync(url, true);
 
         const newMaterial = matGlb.scene.children[0].material;
 
@@ -37,11 +37,13 @@ function AssetsExplorer(editor) {
 
     };
 
-    async function loadAsync(url, progressCb) {
-        const cached = _cache.get(url);
-        if(!!cached) {
-            console.log("loaded from cahce: " + url);
-            return cached;
+    async function loadAsync(url, useCache = false, progressCb) {
+        if(useCache) {
+            const cached = _cache.get(url);
+            if(!!cached) {
+                console.log("loaded from cahce: " + url);
+                return cached;
+            }
         }
 
         const loader = new GLTFLoader();
@@ -50,7 +52,9 @@ function AssetsExplorer(editor) {
             loader.load(
                 url,
                 gltf => {
-                    _cache.set(url, gltf);
+                    if(useCache) {
+                        _cache.set(url, gltf);
+                    }
                     resolve(gltf);
                 },
                 progress => !!progressCb && progressCb(progress),
@@ -59,7 +63,7 @@ function AssetsExplorer(editor) {
         });
     };
 
-    this.clearAllAssets = function() {
+    this.clearMaterialsCache = function() {
         for (const [,g] of _cache) {
             g.scene.traverse(o => {
 
@@ -81,9 +85,7 @@ function AssetsExplorer(editor) {
                     }
                 }
             });
-            if(!!g.scene.parent) {
-                scene.parent.remove(g.scene);
-            }    
+              
         }
         _cache.clear();
     } 
