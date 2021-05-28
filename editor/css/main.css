@@ -526,6 +526,17 @@ select {
 
 /* Geometries */
 
+.geo-clear-btn {
+	width: 100%;
+	font-weight: 800;
+	font-size: 12px;
+	color: #888;
+	transition: all 0.3s ease;
+}
+	.geo-clear-btn:hover {
+		background-color: var(--red-50);
+		color: #fff;
+	}
 .geo-item {
 	display: flex;
 	justify-content: space-between;
@@ -547,9 +558,10 @@ select {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 31px;
+		width: 26px;
 		font-weight: 800;
-		font-size: 14px;
+		font-size: 12px;
+		color: #888;
 		transition: background-color 0.3s ease, color 0.3s ease;
 	}
 	.geo-item:hover {
@@ -591,10 +603,10 @@ select {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 31px;
-		height: 31px;
+		width: 26px;
+		height: 26px;
 		font-weight: 800;
-		font-size: 20px;
+		font-size: 16px;
 		background-color: transparent;
 		color: var(--red-50);
 		transition: inherit;
