@@ -8,6 +8,8 @@ function AssetsExplorer(editor) {
 
     let _source;
 
+    const _cache = new Map();
+
     const signals = editor.signals;
 
     signals.sourceChanged.add(function (source) {
@@ -36,17 +38,55 @@ function AssetsExplorer(editor) {
     };
 
     async function loadAsync(url, progressCb) {
+        const cached = _cache.get(url);
+        if(!!cached) {
+            console.log("loaded from cahce: " + url);
+            return cached;
+        }
+
         const loader = new GLTFLoader();
 
         return new Promise((resolve, reject) => {
             loader.load(
                 url,
-                gltf => resolve(gltf),
+                gltf => {
+                    _cache.set(url, gltf);
+                    resolve(gltf);
+                },
                 progress => !!progressCb && progressCb(progress),
                 err => reject(err)
             );
         });
     };
+
+    this.clearAllAssets = function() {
+        for (const [,g] of _cache) {
+            g.scene.traverse(o => {
+
+                if (o.geometry) {
+                    o.geometry.dispose()
+                    console.log("dispose geometry ", o.geometry)                        
+                }
+        
+                if (o.material) {
+                    if (o.material.length) {
+                        for (let i = 0; i < o.material.length; ++i) {
+                            o.material[i].dispose()
+                            console.log("dispose material ", o.material[i])                                
+                        }
+                    }
+                    else {
+                        o.material.dispose()
+                        console.log("dispose material ", o.material)                            
+                    }
+                }
+            });
+            if(!!g.scene.parent) {
+                scene.parent.remove(g.scene);
+            }    
+        }
+        _cache.clear();
+    } 
 
 }
 
