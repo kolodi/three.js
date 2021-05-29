@@ -410,7 +410,6 @@ select {
 	right: 0;
 	top: 32px;
 	bottom: 0;
-	/* width: 300px; */
 	width: 436px;
 	background: #eee;
 	overflow: auto;
@@ -510,7 +509,6 @@ select {
 
 	.TabbedPanel .Tab.selected {
 		font-weight: 800;
-		/* color: #888; */
 		color: var(--red-50);
 		background-color: #eee;
 	}
@@ -640,6 +638,22 @@ select {
 .mat-content > .geo-item {
 	align-self: flex-end;
 	width: 95%;
+}
+
+/* Settings */
+
+.source-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.set-refresh-btn {
+	justify-self: flex-end;
+	display: flex;
+	align-items: center;
+	height: 21px;
 }
 
 /* */

@@ -1,6 +1,7 @@
 function Config() {
 
 	var name = 'threejs-editor';
+	var baseUrl = 'https://jsonblob.com/api/jsonBlob/e8ae5a41-bec4-11eb-935b-67cbcf14e5b5';
 
 	var storage = {
 		'language': 'en',
@@ -27,7 +28,7 @@ function Config() {
 		'settings/shortcuts/undo': 'z',
 		'settings/shortcuts/focus': 'f',
 
-		'explorer/sourcesListUrl': 'https://jsonblob.com/api/jsonBlob/e8ae5a41-bec4-11eb-935b-67cbcf14e5b5',
+		'explorer/sourcesListUrl': baseUrl,
 		'explorer/sources': null,
 		'explorer/selectedSourceIndex': 0
 	};
@@ -73,7 +74,7 @@ function Config() {
 		clear: function () {
 
 			delete window.localStorage[ name ];
-
+			
 		}
 
 	};

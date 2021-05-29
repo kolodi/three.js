@@ -12,21 +12,29 @@ import { SidebarMaterials } from './Sidebar.Materials.js';
 function Sidebar(editor) {
 
 	const signals = editor.signals;
-	var strings = editor.strings;
+	const strings = editor.strings;
 
-	var container = new UITabbedPanel();
+	async function renderAssetsTabs(source) {
+		const r = await fetch(source.AssetsList);
+		const assets = await r.json();
+
+		materials.render(assets.Materials);
+		geometries.render(assets.Geometries);
+	};
+
+	const container = new UITabbedPanel();
 	container.setId('sidebar');
 
-	var scene = new UISpan().add(
+	const scene = new UISpan().add(
 		new SidebarScene(editor),
 		new SidebarProperties(editor),
 		new SidebarAnimation(editor),
 		new SidebarScript(editor)
 	);
-	var geometries = new SidebarGeometries(editor);
-	var materials = new SidebarMaterials(editor);
-	var project = new SidebarProject(editor);
-	var settings = new SidebarSettings(editor);
+	const geometries = new SidebarGeometries(editor);
+	const materials = new SidebarMaterials(editor);
+	const project = new SidebarProject(editor);
+	const settings = new SidebarSettings(editor);
 
 	container.addTab('scene', strings.getKey('sidebar/scene'), scene);
 	container.addTab('geometries', strings.getKey('sidebar/geometries'), geometries.container);
@@ -36,27 +44,10 @@ function Sidebar(editor) {
 	container.select('scene');
 
 	signals.sourceChanged.add(function (source) {
-
         renderAssetsTabs(source);
-
     });
 
-	async function renderAssetsTabs(source) {
-
-		const r = await fetch(source.AssetsList);
-		const assets = await r.json();
-		materials.render(assets.Materials);
-		geometries.render(assets.Geometries);
-
-	};
-
-	function init() {
-
-		settings.renderSources();
-		
-	};
-
-	init();
+	settings.renderSources();
 
 	return container;
 

@@ -45,20 +45,20 @@ function AssetsExplorer(editor) {
         for (const [,g] of _cache) {
             g.scene.traverse(o => {
                 if (o.geometry) {
-                    o.geometry.dispose()
-                    console.log("dispose geometry ", o.geometry)                        
+                    o.geometry.dispose();
+                    console.log("dispose geometry ", o.geometry);
                 }
         
                 if (o.material) {
                     if (o.material.length) {
                         for (let i = 0; i < o.material.length; ++i) {
-                            o.material[i].dispose()
-                            console.log("dispose material ", o.material[i])                                
+                            o.material[i].dispose();
+                            console.log("dispose material ", o.material[i]);
                         }
                     }
                     else {
-                        o.material.dispose()
-                        console.log("dispose material ", o.material)                            
+                        o.material.dispose();
+                        console.log("dispose material ", o.material);
                     }
                 }
             });
@@ -71,7 +71,7 @@ function AssetsExplorer(editor) {
     this.clearScene = function() {
 
         const scene = editor.scene.children;
-        const sceneClone = scene.map(obj => obj)
+        const sceneClone = scene.map(obj => obj);
 
         sceneClone.forEach(object => {
             if ( object !== null && object.parent !== null ) {
