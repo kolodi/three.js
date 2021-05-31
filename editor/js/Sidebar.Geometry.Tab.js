@@ -17,7 +17,8 @@ function SidebarGeometryTab(editor, group) {
     const keys = Object.keys(group.Items);
     keys.forEach(key => {
         const geoTitle = new UIText(key);
-        const geoBtn = new UIButton('+');
+        const geoBtn = new UIButton();
+        geoBtn.dom.innerHTML = '<i class="fas fa-plus"></i>';
         const geoItem = new UIDiv().setClass('geo-item').add(geoTitle).add(geoBtn);
         const item = {
             Name: key,
