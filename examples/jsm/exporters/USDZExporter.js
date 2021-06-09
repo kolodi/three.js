@@ -106,7 +106,7 @@ async function imgToU8( image, color ) {
 		const context = canvas.getContext( '2d' );
 		context.drawImage( image, 0, 0, canvas.width, canvas.height );
 
-		if ( color !== undefined ) {
+		if ( color !== undefined && color !== 'ffffff' ) {
 
 			context.globalCompositeOperation = 'multiply';
 			context.fillStyle = `#${ color }`;
