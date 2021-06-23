@@ -71,13 +71,13 @@ class RoomEnvironment extends Scene {
 
 
 		// -x right
-		const light1 = new Mesh( geometry, createAreaLightMaterial( 50 ) );
+		const light1 = new Mesh( geometry, createAreaLightMaterial( 40 ) );
 		light1.position.set( - 16.116, 14.37, 8.208 );
 		light1.scale.set( 0.1, 2.428, 2.739 );
 		this.add( light1 );
 
 		// -x left
-		const light2 = new Mesh( geometry, createAreaLightMaterial( 50 ) );
+		const light2 = new Mesh( geometry, createAreaLightMaterial( 40 ) );
 		light2.position.set( - 16.109, 18.021, - 8.207 );
 		light2.scale.set( 0.1, 2.425, 2.751 );
 		this.add( light2 );
@@ -89,7 +89,7 @@ class RoomEnvironment extends Scene {
 		this.add( light3 );
 
 		// +z
-		const light4 = new Mesh( geometry, createAreaLightMaterial( 43 ) );
+		const light4 = new Mesh( geometry, createAreaLightMaterial( 20 ) );
 		light4.position.set( - 0.462, 8.89, 14.520 );
 		light4.scale.set( 4.38, 5.441, 0.088 );
 		this.add( light4 );
@@ -101,7 +101,7 @@ class RoomEnvironment extends Scene {
 		this.add( light5 );
 
 		// +y
-		const light6 = new Mesh( geometry, createAreaLightMaterial( 100 ) );
+		const light6 = new Mesh( geometry, createAreaLightMaterial( 50 ) );
 		light6.position.set( 0.0, 20.0, 0.0 );
 		light6.scale.set( 1.0, 0.1, 1.0 );
 		this.add( light6 );
