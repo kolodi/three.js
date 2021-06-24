@@ -14,9 +14,9 @@ function SidebarGeometries(editor) {
     panel.setPaddingTop('10px');
     container.add(panel);
 
-    const clearBtn = new UIButton('clear scene').addClass('geo-clear-btn');
-    clearBtn.onClick(() => explorer.clearScene());
-    panel.add(clearBtn);
+    const clearSceneBtn = new UIButton('clear scene').addClass('geo-clear-btn');
+    clearSceneBtn.onClick(() => explorer.clearScene());
+    panel.add(clearSceneBtn);
 
     const tabbedPanel = new UITabbedPanel();
 
@@ -27,7 +27,7 @@ function SidebarGeometries(editor) {
         const keys = Object.keys(groups);
         keys.forEach(key => {
             const geoTab = new SidebarGeometryTab(editor, groups[key]);
-            tabbedPanel.addTab(key, key, geoTab)
+            tabbedPanel.addTab(key, key, geoTab);
         });
         tabbedPanel.select(keys[0]);
         container.add(tabbedPanel);
