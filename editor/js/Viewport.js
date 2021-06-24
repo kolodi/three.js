@@ -321,6 +321,12 @@ function Viewport( editor ) {
 
 	} );
 
+	signals.transformModeDisabled.add( function ( mode ) {
+
+		transformControls.setMode( mode );
+
+	} );
+
 	signals.snapChanged.add( function ( dist ) {
 
 		transformControls.setTranslationSnap( dist );
@@ -417,7 +423,7 @@ function Viewport( editor ) {
 		transformControls.detach();
 
 		if ( object !== null && object !== scene && object !== camera ) {
-
+	
 			box.setFromObject( object );
 
 			if ( box.isEmpty() === false ) {

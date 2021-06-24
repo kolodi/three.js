@@ -19,7 +19,11 @@ function Toolbar( editor ) {
 	translate.dom.appendChild( translateIcon );
 	translate.onClick( function () {
 
-		signals.transformModeChanged.dispatch( 'translate' );
+		if (translate.dom.classList.contains( 'selected' )) {
+			signals.transformModeDisabled.dispatch( 'disabled' );
+		} else {
+			signals.transformModeChanged.dispatch( 'translate' );
+		}
 
 	} );
 	container.add( translate );
@@ -32,7 +36,11 @@ function Toolbar( editor ) {
 	rotate.dom.appendChild( rotateIcon );
 	rotate.onClick( function () {
 
-		signals.transformModeChanged.dispatch( 'rotate' );
+		if (rotate.dom.classList.contains( 'selected' )) {
+			signals.transformModeDisabled.dispatch( 'disabled' );
+		} else {
+			signals.transformModeChanged.dispatch( 'rotate' );
+		}
 
 	} );
 	container.add( rotate );
@@ -45,7 +53,12 @@ function Toolbar( editor ) {
 	scale.dom.appendChild( scaleIcon );
 	scale.onClick( function () {
 
-		signals.transformModeChanged.dispatch( 'scale' );
+		if (scale.dom.classList.contains( 'selected' )) {
+			signals.transformModeDisabled.dispatch( 'disabled' );
+		} else {
+			signals.transformModeChanged.dispatch( 'scale' );
+		}
+
 
 	} );
 	container.add( scale );
@@ -72,6 +85,18 @@ function Toolbar( editor ) {
 			case 'translate': translate.dom.classList.add( 'selected' ); break;
 			case 'rotate': rotate.dom.classList.add( 'selected' ); break;
 			case 'scale': scale.dom.classList.add( 'selected' ); break;
+
+		}
+
+	} );
+
+	signals.transformModeDisabled.add( function ( mode ) {
+		
+		if ( mode === 'disabled' ) {
+
+			translate.dom.classList.remove( 'selected' );
+			rotate.dom.classList.remove( 'selected' );
+			scale.dom.classList.remove( 'selected' );
 
 		}
 
