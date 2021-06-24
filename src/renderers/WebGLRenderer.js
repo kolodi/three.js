@@ -4,10 +4,11 @@ import {
 	FloatType,
 	UnsignedByteType,
 	LinearEncoding,
-	NoToneMapping
+	NoToneMapping,
+	LinearMipmapLinearFilter,
+	NearestFilter,
+	ClampToEdgeWrapping
 } from '../constants.js';
-import * as MathUtils from '../math/MathUtils.js';
-import { DataTexture } from '../textures/DataTexture.js';
 import { Frustum } from '../math/Frustum.js';
 import { Matrix4 } from '../math/Matrix4.js';
 import { Vector2 } from '../math/Vector2.js';
@@ -32,6 +33,7 @@ import { WebGLPrograms } from './webgl/WebGLPrograms.js';
 import { WebGLProperties } from './webgl/WebGLProperties.js';
 import { WebGLRenderLists } from './webgl/WebGLRenderLists.js';
 import { WebGLRenderStates } from './webgl/WebGLRenderStates.js';
+import { WebGLRenderTarget } from './WebGLRenderTarget.js';
 import { WebGLShadowMap } from './webgl/WebGLShadowMap.js';
 import { WebGLState } from './webgl/WebGLState.js';
 import { WebGLTextures } from './webgl/WebGLTextures.js';
@@ -161,6 +163,10 @@ function WebGLRenderer( parameters ) {
 
 	let _clippingEnabled = false;
 	let _localClippingEnabled = false;
+
+	// transmission
+
+	let _transmissionRenderTarget = null;
 
 	// camera matrices cache
 
@@ -598,6 +604,13 @@ function WebGLRenderer( parameters ) {
 		xr.removeEventListener( 'sessionstart', onXRSessionStart );
 		xr.removeEventListener( 'sessionend', onXRSessionEnd );
 
+		if ( _transmissionRenderTarget ) {
+
+			_transmissionRenderTarget.dispose();
+			_transmissionRenderTarget = null;
+
+		}
+
 		animation.stop();
 
 	};
@@ -1001,7 +1014,9 @@ function WebGLRenderer( parameters ) {
 
 		if ( xr.enabled === true && xr.isPresenting === true ) {
 
-			camera = xr.getCamera( camera );
+			if ( xr.cameraAutoUpdate === true ) xr.updateCamera( camera );
+
+			camera = xr.getCamera(); // use XR camera for rendering
 
 		}
 
@@ -1058,9 +1073,11 @@ function WebGLRenderer( parameters ) {
 		// render scene
 
 		const opaqueObjects = currentRenderList.opaque;
+		const transmissiveObjects = currentRenderList.transmissive;
 		const transparentObjects = currentRenderList.transparent;
 
 		if ( opaqueObjects.length > 0 ) renderObjects( opaqueObjects, scene, camera );
+		if ( transmissiveObjects.length > 0 ) renderTransmissiveObjects( opaqueObjects, transmissiveObjects, scene, camera );
 		if ( transparentObjects.length > 0 ) renderObjects( transparentObjects, scene, camera );
 
 		//
@@ -1243,6 +1260,34 @@ function WebGLRenderer( parameters ) {
 			projectObject( children[ i ], camera, groupOrder, sortObjects );
 
 		}
+
+	}
+
+	function renderTransmissiveObjects( opaqueObjects, transmissiveObjects, scene, camera ) {
+
+		if ( _transmissionRenderTarget === null ) {
+
+			_transmissionRenderTarget = new WebGLRenderTarget( 1024, 1024, {
+				generateMipmaps: true,
+				minFilter: LinearMipmapLinearFilter,
+				magFilter: NearestFilter,
+				wrapS: ClampToEdgeWrapping,
+				wrapT: ClampToEdgeWrapping
+			} );
+
+		}
+
+		const currentRenderTarget = _this.getRenderTarget();
+		_this.setRenderTarget( _transmissionRenderTarget );
+		_this.clear();
+
+		renderObjects( opaqueObjects, scene, camera );
+
+		textures.updateRenderTargetMipmap( _transmissionRenderTarget );
+
+		_this.setRenderTarget( currentRenderTarget );
+
+		renderObjects( transmissiveObjects, scene, camera );
 
 	}
 
@@ -1648,34 +1693,9 @@ function WebGLRenderer( parameters ) {
 
 			if ( skeleton ) {
 
-				const bones = skeleton.bones;
-
 				if ( capabilities.floatVertexTextures ) {
 
-					if ( skeleton.boneTexture === null ) {
-
-						// layout (1 matrix = 4 pixels)
-						//      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
-						//  with  8x8  pixel texture max   16 bones * 4 pixels =  (8 * 8)
-						//       16x16 pixel texture max   64 bones * 4 pixels = (16 * 16)
-						//       32x32 pixel texture max  256 bones * 4 pixels = (32 * 32)
-						//       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
-
-
-						let size = Math.sqrt( bones.length * 4 ); // 4 pixels needed for 1 matrix
-						size = MathUtils.ceilPowerOfTwo( size );
-						size = Math.max( size, 4 );
-
-						const boneMatrices = new Float32Array( size * size * 4 ); // 4 floats per RGBA pixel
-						boneMatrices.set( skeleton.boneMatrices ); // copy current values
-
-						const boneTexture = new DataTexture( boneMatrices, size, size, RGBAFormat, FloatType );
-
-						skeleton.boneMatrices = boneMatrices;
-						skeleton.boneTexture = boneTexture;
-						skeleton.boneTextureSize = size;
-
-					}
+					if ( skeleton.boneTexture === null ) skeleton.computeBoneTexture();
 
 					p_uniforms.setValue( _gl, 'boneTexture', skeleton.boneTexture, textures );
 					p_uniforms.setValue( _gl, 'boneTextureSize', skeleton.boneTextureSize );
@@ -1724,7 +1744,7 @@ function WebGLRenderer( parameters ) {
 
 			}
 
-			materials.refreshMaterialUniforms( m_uniforms, material, _pixelRatio, _height );
+			materials.refreshMaterialUniforms( m_uniforms, material, _pixelRatio, _height, _transmissionRenderTarget );
 
 			WebGLUniforms.upload( _gl, materialProperties.uniformsList, m_uniforms, textures );
 
@@ -2018,7 +2038,17 @@ function WebGLRenderer( parameters ) {
 		const levelScale = Math.pow( 2, - level );
 		const width = Math.floor( texture.image.width * levelScale );
 		const height = Math.floor( texture.image.height * levelScale );
-		const glFormat = utils.convert( texture.format );
+
+		let glFormat = utils.convert( texture.format );
+
+		if ( capabilities.isWebGL2 ) {
+
+			// Workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=1120100
+
+			if ( glFormat === _gl.RGB ) glFormat = _gl.RGB8;
+			if ( glFormat === _gl.RGBA ) glFormat = _gl.RGBA8;
+
+		}
 
 		textures.setTexture2D( texture, 0 );
 
