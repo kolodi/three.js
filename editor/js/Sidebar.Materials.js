@@ -23,21 +23,21 @@ function SidebarMaterials(editor) {
             const label = new UILabel().setClass('mat-label');
             const checkbox = new UICheckbox(false).setClass('mat-check');
             const matTitle = new UIText(key);
-            const matBtn = new UIButton();
-            matBtn.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
+            const matArrow = new UIText();
+            matArrow.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
 
-            const matItem = new UIDiv().setClass('mat-item').add(matTitle).add(matBtn);
+            const matItem = new UIDiv().setClass('mat-item').add(matTitle).add(matArrow);
             const matContent = new UIDiv().setClass('mat-content');
 
             checkbox.onChange(function () {
                 if (checkbox.getValue()) {
                     matItem.addClass('mat-i-expanded');
                     matContent.addClass('mat-c-expanded');
-                    matBtn.dom.innerHTML = '<i class="fas fa-angle-left"></i>';
+                    matArrow.dom.innerHTML = '<i class="fas fa-angle-left"></i>';
                 } else {
                     matItem.removeClass('mat-i-expanded');
                     matContent.removeClass('mat-c-expanded');
-                    matBtn.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
+                    matArrow.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
                 }
             });
 
@@ -50,7 +50,7 @@ function SidebarMaterials(editor) {
                 const varBtn = new UIButton();
                 varBtn.dom.innerHTML = '<i class="fas fa-plus"></i>';
                 const varItem = new UIDiv().setClass('geo-item').add(varTitle).add(varBtn);
-                varItem.onClick(() => explorer.applyMaterialToSelected(materials[key].Variants[variant]));
+                varItem.onClick(() => explorer.applyMaterialToSelected(materials[key].Variants[variant], variant));
                 matContent.add(varItem);
             });
 

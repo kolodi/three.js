@@ -40,7 +40,7 @@ class AddMaterialCommand extends Command {
 
     execute() {
 
-        const selected = editor.selected;
+        let selected = editor.selected;
 
         if (!selected || !selected.isMesh || !selected.material) return;
 
@@ -56,6 +56,7 @@ class AddMaterialCommand extends Command {
         selectedMaterial.metalness = newMaterial.metalness;
         selectedMaterial.roughness = newMaterial.roughness;
         selectedMaterial.roughnessMap = newMaterial.roughnessMap;
+        selected.userData.material = newMaterial.userData.name;
 
         selectedMaterial.needsUpdate = true;
 

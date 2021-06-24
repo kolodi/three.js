@@ -338,7 +338,10 @@ function Strings( config ) {
 			'viewport/info/objects': 'Objects',
 			'viewport/info/vertices': 'Vertices',
 			'viewport/info/triangles': 'Triangles',
-			'viewport/info/frametime': 'Frametime'
+			'viewport/info/frametime': 'Frametime',
+
+			'viewport/selected/selected': 'Selected',
+			'viewport/selected/material': 'Material',
 
 		},
 
@@ -672,7 +675,7 @@ function Strings( config ) {
 			'viewport/info/objects': 'Objets',
 			'viewport/info/vertices': 'Sommets',
 			'viewport/info/triangles': 'Triangles',
-			'viewport/info/frametime': 'Temps de trame'
+			'viewport/info/frametime': 'Temps de trame',
 
 		},
 

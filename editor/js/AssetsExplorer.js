@@ -28,15 +28,22 @@ function AssetsExplorer(editor) {
 
     };
 
-    this.applyMaterialToSelected = async function (materialVariant) {
-
+    this.applyMaterialToSelected = async function (materialVariant, materialName) {
+        
         const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
         
         const matGlb = await loadAsync(url, true);
 
         const newMaterial = matGlb.scene.children[0].material;
+        const newMat = {
+            ...newMaterial,
+            userData: {
+                ...newMaterial.userData,
+                name: materialName
+            }
+        };
 
-        editor.execute(new AddMaterialCommand(editor, newMaterial));
+        editor.execute(new AddMaterialCommand(editor, newMat));
 
     };
 
