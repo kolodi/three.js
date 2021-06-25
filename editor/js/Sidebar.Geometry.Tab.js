@@ -26,9 +26,10 @@ function SidebarGeometryTab(editor, group) {
 
     const searchRow = new UIRow().addClass('Search');
 
-    const search = new UIInput('').addClass('geo-search').onChange(searchHandler);
+    const search = new UIInput('').addClass('search').onChange(searchHandler);
+    search.dom.setAttribute('placeholder', 'search');
     search.dom.setAttribute('spellcheck', false);
-    const icon = new UIText().addClass('geo-search-icon').onChange(searchHandler);
+    const icon = new UIText().addClass('search-icon').onChange(searchHandler);
     icon.dom.innerHTML = '<i class="fas fa-search"></i>';
     searchRow.add(search);
     searchRow.add(icon);

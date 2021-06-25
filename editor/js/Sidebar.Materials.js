@@ -1,28 +1,56 @@
-import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan, UILabel, UICheckbox } from './libs/ui.js';
+import { UIPanel, UIRow, UIButton, UIDiv, UIText, UISpan, UILabel, UICheckbox, UIInput } from './libs/ui.js';
 
 function SidebarMaterials(editor) {
 
     const explorer = editor.explorer;
+    let materialGroups;
+    let filtered;
+
+    function searchHandler() {
+        let value = this.getValue();
+
+        filtered = Object.keys(materialGroups).filter(item =>
+            item.toLowerCase().includes(value)
+        );
+
+        render();
+    }
 
     // Layout
     const container = new UISpan();
 
+    const panel = new UIPanel();
+    panel.setBorderTop('0');
+    panel.setPaddingTop('10px');
+    container.add(panel);
+
+    const searchRow = new UIRow().addClass('Search');
+
+    const search = new UIInput('').addClass('search').onChange(searchHandler);
+    search.dom.setAttribute('placeholder', 'search');
+    search.dom.setAttribute('spellcheck', false);
+    const icon = new UIText().addClass('search-icon').onChange(searchHandler);
+    icon.dom.innerHTML = '<i class="fas fa-search"></i>';
+    searchRow.add(search);
+    searchRow.add(icon);
+
+    const itemsRow = new UIRow();
+
     function render(materials) {
+        
+        itemsRow.clear();
 
-        container.clear();
+        if (!filtered) {
+            materialGroups = materials;
+            filtered = Object.keys(materials);
+        } else {
+            filtered = filtered;
+        }
 
-        const panel = new UIPanel();
-        panel.setBorderTop('0');
-        panel.setPaddingTop('20px');
-        container.add(panel);
-
-        const itemsRow = new UIRow();
-
-        const keys = Object.keys(materials);
-        keys.forEach(key => {
+        filtered.forEach(group => {
             const label = new UILabel().setClass('mat-label');
             const checkbox = new UICheckbox(false).setClass('mat-check');
-            const matTitle = new UIText(key);
+            const matTitle = new UIText(group);
             const matArrow = new UIText();
             matArrow.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
 
@@ -44,21 +72,27 @@ function SidebarMaterials(editor) {
             label.add(checkbox);
             label.add(matItem);
 
-            const variants = Object.keys(materials[key].Variants);
-            variants.forEach(variant => {
+            const matVariants = Object.keys(materialGroups[group].Variants);
+            matVariants.forEach(variant => {
                 const varTitle = new UIText(variant);
                 const varBtn = new UIButton();
                 varBtn.dom.innerHTML = '<i class="fas fa-plus"></i>';
                 const varItem = new UIDiv().setClass('geo-item').add(varTitle).add(varBtn);
-                varItem.onClick(() => explorer.applyMaterialToSelected(materials[key].Variants[variant], variant));
+                varItem.onClick(() => explorer.applyMaterialToSelected(
+                    materialGroups[group].Variants[variant],
+                    variant
+                ));
                 matContent.add(varItem);
             });
 
             itemsRow.add(label);
             itemsRow.add(matContent);
+            
         });
-
+        
+        panel.add(searchRow);
         panel.add(itemsRow);
+
     }
 
     return {container, render};
