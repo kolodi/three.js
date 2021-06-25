@@ -79,8 +79,7 @@ function SidebarSettings(editor) {
 		async function setSources() {
 			const res = await fetch(config.getKey('explorer/sourcesListUrl'));
 			sources = await res.json();
-			index = 0;
-
+			index = config.getKey('explorer/selectedSourceIndex');
 			config.setKey('explorer/sources', sources, 'explorer/selectedSourceIndex', index);
 		}
 
