@@ -546,11 +546,7 @@ select {
 	right: 8px;
 	color: #ccc;
 	transform: translateY(-50%);
-	cursor: pointer !important;
 	transition: all 0.3s ease;
-}
-.search-icon:hover {
-	color: var(--red-50);
 }
 
 /* Geometries */

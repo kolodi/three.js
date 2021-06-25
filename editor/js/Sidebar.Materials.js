@@ -26,13 +26,17 @@ function SidebarMaterials(editor) {
 
     const searchRow = new UIRow().addClass('Search');
 
-    const search = new UIInput('').addClass('search').onChange(searchHandler);
+    const search = new UIInput('')
+        .addClass('search')
+        .onKeyUp(searchHandler)
+        .onBlur(function () { this.setValue('') });
     search.dom.setAttribute('placeholder', 'search');
     search.dom.setAttribute('spellcheck', false);
-    const icon = new UIText().addClass('search-icon').onChange(searchHandler);
+    const icon = new UIText().addClass('search-icon');
     icon.dom.innerHTML = '<i class="fas fa-search"></i>';
     searchRow.add(search);
     searchRow.add(icon);
+    panel.add(searchRow);
 
     const itemsRow = new UIRow();
 
@@ -87,11 +91,9 @@ function SidebarMaterials(editor) {
 
             itemsRow.add(label);
             itemsRow.add(matContent);
+            panel.add(itemsRow);
             
         });
-        
-        panel.add(searchRow);
-        panel.add(itemsRow);
 
     }
 
