@@ -28,11 +28,11 @@ function AssetsExplorer(editor) {
 
     };
 
-    this.applyMaterialToSelected = async function (materialVariant, materialName) {
+    this.applyMaterialToSelected = async function (materialVariant, materialName, useCache) {
         
         const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
         
-        const matGlb = await loadAsync(url, true);
+        const matGlb = await loadAsync(url, useCache);
 
         const newMaterial = matGlb.scene.children[0].material;
         const newMat = {
@@ -101,9 +101,11 @@ function AssetsExplorer(editor) {
 
         const loader = new GLTFLoader();
 
+        const urlHash = `${url}?v=${Date.now()}`;
+
         return new Promise((resolve, reject) => {
             loader.load(
-                url,
+                urlHash,
                 gltf => {
                     if (useCache) _cache.set(url, gltf);
                     resolve(gltf);

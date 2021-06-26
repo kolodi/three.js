@@ -48,9 +48,10 @@ function SidebarMaterials(editor) {
             variants.forEach(variant => {
                 const varTitle = new UIText(variant);
                 const varBtn = new UIButton();
-                varBtn.dom.innerHTML = '<i class="fas fa-plus"></i>';
+                varBtn.dom.innerHTML = '<i class="fas fa-sync"></i>';
                 const varItem = new UIDiv().setClass('geo-item').add(varTitle).add(varBtn);
-                varItem.onClick(() => explorer.applyMaterialToSelected(materials[key].Variants[variant], variant));
+                varItem.onClick(() => explorer.applyMaterialToSelected(materials[key].Variants[variant], variant, true));
+                varBtn.onClick(() => explorer.applyMaterialToSelected(materials[key].Variants[variant], variant, false));
                 matContent.add(varItem);
             });
 
