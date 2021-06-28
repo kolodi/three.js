@@ -44,7 +44,7 @@ function Editor() {
 		savingFinished: new Signal(),
 
 		transformModeChanged: new Signal(),
-		transformModeDisabled: new Signal(),
+		// transformModeDisabled: new Signal(),
 
 		snapChanged: new Signal(),
 		spaceChanged: new Signal(),

@@ -321,11 +321,11 @@ function Viewport( editor ) {
 
 	} );
 
-	signals.transformModeDisabled.add( function ( mode ) {
+	// signals.transformModeDisabled.add( function ( mode ) {
 
-		transformControls.setMode( mode );
+	// 	transformControls.setMode( mode );
 
-	} );
+	// } );
 
 	signals.snapChanged.add( function ( dist ) {
 
@@ -423,7 +423,17 @@ function Viewport( editor ) {
 		transformControls.detach();
 
 		if ( object !== null && object !== scene && object !== camera ) {
+
+			if ( object.userData.locked ) {
 	
+				signals.transformModeChanged.dispatch( 'locked' );
+		
+			} else {
+
+				signals.transformModeChanged.dispatch( 'translate' );
+
+			}
+
 			box.setFromObject( object );
 
 			if ( box.isEmpty() === false ) {

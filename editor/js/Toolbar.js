@@ -19,10 +19,20 @@ function Toolbar( editor ) {
 	translate.dom.appendChild( translateIcon );
 	translate.onClick( function () {
 
-		if (translate.dom.classList.contains( 'selected' )) {
-			signals.transformModeDisabled.dispatch( 'disabled' );
+		var selected = editor.selected;
+
+		if ( translate.dom.classList.contains( 'selected' ) ) {
+
+			signals.transformModeChanged.dispatch( 'disabled' );
+
 		} else {
-			signals.transformModeChanged.dispatch( 'translate' );
+
+			if ( !selected.userData.locked ) {
+
+				signals.transformModeChanged.dispatch( 'translate' );
+
+			}
+
 		}
 
 	} );
@@ -36,10 +46,20 @@ function Toolbar( editor ) {
 	rotate.dom.appendChild( rotateIcon );
 	rotate.onClick( function () {
 
-		if (rotate.dom.classList.contains( 'selected' )) {
-			signals.transformModeDisabled.dispatch( 'disabled' );
+		var selected = editor.selected;
+
+		if ( rotate.dom.classList.contains( 'selected' ) ) {
+
+			signals.transformModeChanged.dispatch( 'disabled' );
+
 		} else {
-			signals.transformModeChanged.dispatch( 'rotate' );
+
+			if ( !selected.userData.locked ) {
+
+				signals.transformModeChanged.dispatch( 'rotate' );
+
+			}
+
 		}
 
 	} );
@@ -53,12 +73,21 @@ function Toolbar( editor ) {
 	scale.dom.appendChild( scaleIcon );
 	scale.onClick( function () {
 
-		if (scale.dom.classList.contains( 'selected' )) {
-			signals.transformModeDisabled.dispatch( 'disabled' );
-		} else {
-			signals.transformModeChanged.dispatch( 'scale' );
-		}
+		var selected = editor.selected;
 
+		if ( scale.dom.classList.contains( 'selected' ) ) {
+
+			signals.transformModeChanged.dispatch( 'disabled' );
+
+		} else {
+
+			if ( !selected.userData.locked ) {
+
+				signals.transformModeChanged.dispatch( 'scale' );
+
+			}
+
+		}
 
 	} );
 	container.add( scale );
@@ -72,9 +101,35 @@ function Toolbar( editor ) {
 	} );
 	container.add( local );
 
+	var lockIcon = document.createElement( 'img' );
+	lockIcon.title = strings.getKey( 'toolbar/lock' );
+	lockIcon.src = 'images/unlock.svg';
+
+	var lock = new UIButton();
+	lock.dom.className = 'Button';
+	lock.dom.appendChild( lockIcon );
+	lock.onClick( function () {
+
+		var selected = editor.selected;
+
+		if ( lock.dom.classList.contains( 'selected' ) && selected ) {
+
+			signals.transformModeChanged.dispatch( 'translate' );
+
+		} else if ( !lock.dom.classList.contains( 'selected' ) && selected ) {
+
+			signals.transformModeChanged.dispatch( 'locked' );
+
+		}
+
+	} );
+	container.add( lock );
+
 	//
 
 	signals.transformModeChanged.add( function ( mode ) {
+
+		var selected = editor.selected;
 
 		translate.dom.classList.remove( 'selected' );
 		rotate.dom.classList.remove( 'selected' );
@@ -82,21 +137,31 @@ function Toolbar( editor ) {
 
 		switch ( mode ) {
 
-			case 'translate': translate.dom.classList.add( 'selected' ); break;
-			case 'rotate': rotate.dom.classList.add( 'selected' ); break;
-			case 'scale': scale.dom.classList.add( 'selected' ); break;
-
-		}
-
-	} );
-
-	signals.transformModeDisabled.add( function ( mode ) {
-		
-		if ( mode === 'disabled' ) {
-
-			translate.dom.classList.remove( 'selected' );
-			rotate.dom.classList.remove( 'selected' );
-			scale.dom.classList.remove( 'selected' );
+			case 'translate':
+				translate.dom.classList.add( 'selected' );
+				lock.dom.classList.remove( 'selected' );
+				lockIcon.src = 'images/unlock.svg';
+				selected.userData.locked = false;
+				break;
+			case 'rotate':
+				rotate.dom.classList.add( 'selected' );
+				break;
+			case 'scale':
+				scale.dom.classList.add( 'selected' );
+				break;
+			case 'disabled':
+				translate.dom.classList.remove( 'selected' );
+				rotate.dom.classList.remove( 'selected' );
+				scale.dom.classList.remove( 'selected' );
+				break;
+			case 'locked' :
+				translate.dom.classList.remove( 'selected' );
+				rotate.dom.classList.remove( 'selected' );
+				scale.dom.classList.remove( 'selected' );
+				lock.dom.classList.add( 'selected' );
+				lockIcon.src = 'images/lock.svg';
+				selected.userData.locked = true;
+				break;
 
 		}
 

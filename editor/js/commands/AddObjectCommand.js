@@ -26,7 +26,7 @@ class AddObjectCommand extends Command {
 	execute() {
 
 		this.editor.addObject( this.object );
-		this.editor.select( this.object );
+		// this.editor.select( this.object );
 
 	}
 
