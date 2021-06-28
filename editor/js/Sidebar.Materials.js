@@ -4,17 +4,6 @@ function SidebarMaterials(editor) {
 
     const explorer = editor.explorer;
     let materialGroups;
-    let filtered;
-
-    function searchHandler() {
-        let value = this.getValue();
-
-        filtered = Object.keys(materialGroups).filter(item =>
-            item.toLowerCase().includes(value)
-        );
-
-        render();
-    }
 
     // Layout
     const container = new UISpan();
@@ -26,10 +15,10 @@ function SidebarMaterials(editor) {
 
     const searchRow = new UIRow().addClass('Search');
 
-    const search = new UIInput('')
-        .addClass('search')
-        .onKeyUp(searchHandler)
-        .onBlur(function () { this.setValue('') });
+    const search = new UIInput('').addClass('search');
+    search.dom.addEventListener( 'input', e => {
+        render();
+    });
     search.dom.setAttribute('placeholder', 'search');
     search.dom.setAttribute('spellcheck', false);
     const icon = new UIText().addClass('search-icon');
@@ -40,16 +29,21 @@ function SidebarMaterials(editor) {
 
     const itemsRow = new UIRow();
 
-    function render(materials) {
+    function renderFresh(materials) {
+        search.setValue('');
+        materialGroups = materials;
+        render();
+    }
+
+    function render() {
         
         itemsRow.clear();
 
-        if (!filtered) {
-            materialGroups = materials;
-            filtered = Object.keys(materials);
-        } else {
-            filtered = filtered;
-        }
+        const searchKeyword = search.getValue();
+
+        const filtered = Object.keys(materialGroups).filter(item =>
+            item.toLowerCase().includes(searchKeyword)
+        );
 
         filtered.forEach(group => {
             const label = new UILabel().setClass('mat-label');
@@ -98,7 +92,7 @@ function SidebarMaterials(editor) {
 
     }
 
-    return {container, render};
+    return {container, render: renderFresh};
 
 }
 

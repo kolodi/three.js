@@ -16,7 +16,9 @@ function SidebarGeometryTab(editor, group) {
     const searchRow = new UIRow().addClass('Search');
 
     const search = new UIInput('').addClass('search');
-    search.dom.addEventListener('input', render);
+    search.dom.addEventListener( 'input', e => {
+        render();
+    });
     search.dom.setAttribute('placeholder', 'search');
     search.dom.setAttribute('spellcheck', false);
     const icon = new UIText().addClass('search-icon');

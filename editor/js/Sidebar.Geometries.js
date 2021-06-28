@@ -34,7 +34,6 @@ function SidebarGeometries(editor) {
         tabbedPanel.dom.addEventListener('selected', e => {
             const tab = tabs.get(e.detail.tab.getId());
             if(tab) {
-                console.log("aha");
                 tab.render();
             }
         });
