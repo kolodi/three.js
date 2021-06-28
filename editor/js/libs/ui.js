@@ -1131,6 +1131,8 @@ class UITabbedPanel extends UIDiv {
 
 		this.selected = id;
 
+		this.dom.dispatchEvent(new CustomEvent('selected', {detail: {tab, panel}}));
+
 		return this;
 
 	}

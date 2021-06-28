@@ -25,9 +25,18 @@ function SidebarGeometries(editor) {
         tabbedPanel.clear();
 
         const keys = Object.keys(groups);
+        const tabs = new Map();
         keys.forEach(key => {
-            const geoTab = new SidebarGeometryTab(editor, groups[key]);
-            tabbedPanel.addTab(key, key, geoTab);
+            const tab = new SidebarGeometryTab(editor, groups[key]);
+            tabbedPanel.addTab(key, key, tab.container);
+            tabs.set(key, tab);
+        });
+        tabbedPanel.dom.addEventListener('selected', e => {
+            const tab = tabs.get(e.detail.tab.getId());
+            if(tab) {
+                console.log("aha");
+                tab.render();
+            }
         });
         tabbedPanel.select(keys[0]);
         container.add(tabbedPanel);

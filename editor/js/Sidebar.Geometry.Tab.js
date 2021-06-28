@@ -4,17 +4,6 @@ function SidebarGeometryTab(editor, group) {
 
     const explorer = editor.explorer;
     const geometries = Object.keys(group.Items);
-    let filtered = geometries;
-
-    function searchHandler() {
-        let value = this.getValue();
-        
-        filtered = geometries.filter(item =>
-            item.toLowerCase().includes(value)
-        );
-
-        render();
-    }
 
     // Layout
     const container = new UISpan();
@@ -26,10 +15,8 @@ function SidebarGeometryTab(editor, group) {
 
     const searchRow = new UIRow().addClass('Search');
 
-    const search = new UIInput('')
-        .addClass('search')
-        .onKeyUp(searchHandler)
-        .onBlur(function () { this.setValue('') });
+    const search = new UIInput('').addClass('search');
+    search.dom.addEventListener('input', render);
     search.dom.setAttribute('placeholder', 'search');
     search.dom.setAttribute('spellcheck', false);
     const icon = new UIText().addClass('search-icon');
@@ -39,9 +26,19 @@ function SidebarGeometryTab(editor, group) {
 
     const itemsRow = new UIRow();
 
+    function renderFresh() {
+        search.setValue('');
+        render();
+    }
+
     function render() {
         
         itemsRow.clear();
+
+        const searchKey = search.getValue();
+        const filtered = geometries.filter(item =>
+            item.toLowerCase().includes(searchKey)
+        );
         
         filtered.forEach(key => {
             const geoTitle = new UIText(key);
@@ -62,9 +59,8 @@ function SidebarGeometryTab(editor, group) {
     }
     
     panel.add(searchRow);
-    render();
 
-    return container;
+    return {container, render: renderFresh};
 
 }
 
