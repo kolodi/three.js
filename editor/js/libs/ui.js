@@ -156,7 +156,7 @@ properties.forEach( function ( property ) {
 
 // events
 
-const events = [ 'KeyUp', 'KeyDown', 'MouseOver', 'MouseOut', 'Click', 'DblClick', 'Change', 'Input' ];
+const events = [ 'KeyUp', 'KeyDown', 'MouseOver', 'MouseOut', 'Click', 'DblClick', 'Change', 'Input', 'Blur' ];
 
 events.forEach( function ( event ) {
 

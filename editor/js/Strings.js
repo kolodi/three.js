@@ -335,6 +335,7 @@ function Strings( config ) {
 			'toolbar/rotate': 'Rotate',
 			'toolbar/scale': 'Scale',
 			'toolbar/local': 'Local',
+			'toolbar/lock': 'Lock',
 
 			'viewport/info/objects': 'Objects',
 			'viewport/info/vertices': 'Vertices',
