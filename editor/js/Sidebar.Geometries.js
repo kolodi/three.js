@@ -19,28 +19,30 @@ function SidebarGeometries(editor) {
     panel.add(clearSceneBtn);
 
     const tabbedPanel = new UITabbedPanel();
+    const tabs = new Map();
 
     function render(groups) {
 
         tabbedPanel.clear();
+        tabs.clear();
 
         const keys = Object.keys(groups);
-        const tabs = new Map();
         keys.forEach(key => {
             const tab = new SidebarGeometryTab(editor, groups[key]);
             tabbedPanel.addTab(key, key, tab.container);
             tabs.set(key, tab);
         });
-        tabbedPanel.dom.addEventListener('selected', e => {
-            const tab = tabs.get(e.detail.tab.getId());
-            if(tab) {
-                tab.render();
-            }
-        });
         tabbedPanel.select(keys[0]);
         container.add(tabbedPanel);
-
+        
     }
+    
+    tabbedPanel.dom.addEventListener('selected', e => {
+        const tab = tabs.get(e.detail.tab.getId());
+        if(tab) {
+            tab.render();
+        }
+    });
 
     return { container, render };
     
