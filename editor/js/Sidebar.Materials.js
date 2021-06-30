@@ -76,14 +76,18 @@ function SidebarMaterials(editor) {
                 const varBtn = new UIButton();
                 varBtn.dom.innerHTML = '<i class="fas fa-sync"></i>';
                 const varItem = new UIDiv().setClass('geo-item').add(varTitle).add(varBtn);
+
+                const variantObj =  materialGroups[group].Variants[variant];
+                const materialName = `Group: ${group}, Variant: ${variant}, file path: ${variantObj.Path}`;
+
                 varBtn.onClick(() => explorer.applyMaterialToSelected(
-                    materialGroups[group].Variants[variant], 
-                    variant, 
+                    variantObj, 
+                    materialName, 
                     false
                 ));
                 varItem.onClick(() => explorer.applyMaterialToSelected(
-                    materialGroups[group].Variants[variant],
-                    variant,
+                    variantObj,
+                    materialName,
                     true
                 ));
                 matContent.add(varItem);
