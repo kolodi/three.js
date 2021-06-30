@@ -28,9 +28,9 @@ function AssetsExplorer(editor) {
 
     };
 
-    this.applyMaterialToSelected = async function (materialVariant, materialName, useCache) {
+    this.applyMaterialToSelected = async function (materialData, useCache) {
         
-        const url = `${_source.BasePath}/${materialVariant.Path}.glb`;
+        const url = `${_source.BasePath}/${materialData.variant.data.Path}.glb`;
         
         const matGlb = await loadAsync(url, useCache);
 
@@ -39,7 +39,7 @@ function AssetsExplorer(editor) {
             ...newMaterial,
             userData: {
                 ...newMaterial.userData,
-                name: materialName
+                material: materialData,
             }
         };
 

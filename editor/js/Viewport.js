@@ -8,7 +8,6 @@ import { EditorControls } from './EditorControls.js';
 
 import { ViewportCamera } from './Viewport.Camera.js';
 import { ViewportInfo } from './Viewport.Info.js';
-import { ViewportSelected } from './Viewport.Selected.js';
 import { ViewHelper } from './Viewport.ViewHelper.js';
 import { VR } from './Viewport.VR.js';
 
@@ -28,7 +27,6 @@ function Viewport( editor ) {
 
 	container.add( new ViewportCamera( editor ) );
 	container.add( new ViewportInfo( editor ) );
-	container.add( new ViewportSelected( editor ) );
 
 	//
 

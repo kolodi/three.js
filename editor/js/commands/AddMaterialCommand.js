@@ -56,7 +56,7 @@ class AddMaterialCommand extends Command {
         selectedMaterial.metalness = newMaterial.metalness;
         selectedMaterial.roughness = newMaterial.roughness;
         selectedMaterial.roughnessMap = newMaterial.roughnessMap;
-        selected.userData.material = newMaterial.userData.name;
+        selected.userData.material = newMaterial.userData.material;
 
         selectedMaterial.needsUpdate = true;
 

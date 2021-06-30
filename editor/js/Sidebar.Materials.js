@@ -45,10 +45,10 @@ function SidebarMaterials(editor) {
             item.toLowerCase().includes(searchKeyword)
         );
 
-        filtered.forEach(group => {
+        filtered.forEach(groupName => {
             const label = new UILabel().setClass('mat-label');
             const checkbox = new UICheckbox(false).setClass('mat-check');
-            const matTitle = new UIText(group);
+            const matTitle = new UIText(groupName);
             const matArrow = new UIText();
             matArrow.dom.innerHTML = '<i class="fas fa-angle-down"></i>';
 
@@ -70,24 +70,27 @@ function SidebarMaterials(editor) {
             label.add(checkbox);
             label.add(matItem);
 
-            const matVariants = Object.keys(materialGroups[group].Variants);
-            matVariants.forEach(variant => {
-                const varTitle = new UIText(variant);
+            const matVariants = Object.keys(materialGroups[groupName].Variants);
+            matVariants.forEach(variantName => {
+                const varTitle = new UIText(variantName);
                 const varBtn = new UIButton();
                 varBtn.dom.innerHTML = '<i class="fas fa-sync"></i>';
                 const varItem = new UIDiv().setClass('geo-item').add(varTitle).add(varBtn);
 
-                const variantObj =  materialGroups[group].Variants[variant];
-                const materialName = `Group: ${group}, Variant: ${variant}, file path: ${variantObj.Path}`;
+                const materialData = {
+                    groupName: groupName,
+                    variant: {
+                        name: variantName,
+                        data: materialGroups[groupName].Variants[variantName]
+                    }
+                }
 
                 varBtn.onClick(() => explorer.applyMaterialToSelected(
-                    variantObj, 
-                    materialName, 
+                    materialData,
                     false
                 ));
                 varItem.onClick(() => explorer.applyMaterialToSelected(
-                    variantObj,
-                    materialName,
+                    materialData,
                     true
                 ));
                 matContent.add(varItem);

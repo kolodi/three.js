@@ -53,6 +53,7 @@
 			import { Editor } from './js/Editor.js';
 			import { Viewport } from './js/Viewport.js';
 			import { Toolbar } from './js/Toolbar.js';
+			import { SelectedToolbar } from './js/Selected.Toolbar.js';
 			import { Script } from './js/Script.js';
 			import { Player } from './js/Player.js';
 			import { Sidebar } from './js/Sidebar.js';
@@ -83,6 +84,9 @@
 
 			var toolbar = new Toolbar( editor );
 			document.body.appendChild( toolbar.dom );
+
+			var selectedToolbar = new SelectedToolbar( editor );
+			document.body.appendChild( selectedToolbar.dom );
 
 			var script = new Script( editor );
 			document.body.appendChild( script.dom );
