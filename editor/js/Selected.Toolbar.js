@@ -23,19 +23,22 @@ function SelectedToolbar( editor ) {
 	container.add( selectedText, new UIBreak() );
 	container.add( new UIText( strings.getKey( 'viewport/selected/material' ) ).setTextTransform( 'lowercase' ) );
 	container.add( materialText, new UIBreak() );
-	const materialColor = new UIColor().onInput( updateColor );
+	const materialColor = new UIColor();
+	materialColor.onInput( e => updateColor( materialColor.getHexValue()) );
 	container.add(materialColor);
     const materialColorInput = new UIInput('#ffffff');
-    // materialColorInput.onChange( e => {
-    //     updateColor(materialColorInput.getValue().replace('#',''));
-    // } );
-    materialColorInput.setDisabled(true);
+    materialColorInput.onChange( e => {
+		const hexString = materialColorInput.getValue().replace('#','');
+		const hexNumber = parseInt( hexString, 16 );
+        updateColor(hexNumber);
+    } );
+    //materialColorInput.setDisabled(true);
 	container.add(materialColorInput); 
 
 	signals.objectSelected.add( update );
 	signals.objectChanged.add( update );
 
-	function updateColor() {
+	function updateColor(hex) {
 		const selected = editor.selected;
 
         if(!selected) return;
@@ -43,8 +46,6 @@ function SelectedToolbar( editor ) {
         const material = selected.material;
         
         if(!material) return;
-
-        const hex = materialColor.getHexValue();
 
         if ( material.color !== undefined && material.color.getHex() !== hex ) {
 
