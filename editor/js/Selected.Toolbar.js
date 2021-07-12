@@ -64,7 +64,7 @@ function SelectedToolbar( editor ) {
 		const selected = editor.selected;
 
 		if (editor.selected) {
-			selectedText.setValue( selected.userData?.name );
+			selectedText.setValue( selected.name );
 
 			const materialData = selected.userData.material;
 
